@@ -24,7 +24,7 @@ Before you begin, ensure you have met the following requirements:
 
    ```shell
    git clone https://github.com/qzydustin/Product-Backlog-Management-System.git
-   cd Pharmacy
+   cd pharmacy
    ```
 
 2. **Initialize the Database**
