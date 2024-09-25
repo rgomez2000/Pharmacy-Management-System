@@ -6,8 +6,10 @@ The Pharmacy Management system is a system designed to facilitate the management
 
 ## Features
 
-- **Prescription Management**: Input prescriptions to manage inventory, distribution, and 
-- ****: Prioritize items in your backlog to ensure that your team is working on the most important tasks.
+- **Prescription Management**: Input prescriptions to manage inventory, distribution, and availability of prescriptions.
+- **Patient Management System**: View patients and their prescription requirements, notifications for reminders on refills, assign new prescriptions, etc.
+- **Patient and Staff Accounts**: Allow patients to make accounts to view their indivudal prescriptions and information.
+- **Prescription purchasing system**: Patients are able to make purchases of prescriptions prescribed to them.
 
 ## Getting Started
 
