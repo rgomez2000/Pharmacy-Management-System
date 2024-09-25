@@ -17,8 +17,8 @@ The Pharmacy Management system is a system designed to facilitate the management
 
 Before you begin, ensure you have met the following requirements:
 
-- Python 3.11.7
-- Django 5.0.1
+- Python 3.11.7 or newer
+- Django 5.0.1 or newer
 
 ### Setup and Installation
 
