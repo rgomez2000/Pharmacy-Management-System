@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+
+{% block title %}
+Details about {{ prescription.name }}
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ prescription.name }} {{ prescription.expiry }}</h1>
+  
+<p>Name: {{ prescription.name }}</p>
+<p>Expires on: {{ prescription.expiry }}</p>
+
+<p>Back to <a href="/prescriptions">Prescriptions</a></p>
+
+{% endblock %}
