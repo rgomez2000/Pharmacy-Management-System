@@ -1,4 +1,4 @@
-# PBMS
+# Pharmacy Management System
 
 ## Overview
 
@@ -25,7 +25,7 @@ Before you begin, ensure you have met the following requirements:
 1. **Clone the Repository**
 
    ```shell
-   git clone https://github.com/qzydustin/Product-Backlog-Management-System.git
+   git clone https://github.com/rgomez2000/Pharmacy-Management-System.git
    cd pharmacy
    ```
 
