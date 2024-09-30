@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <!-- User is logged in, display management system placeholder -->
+        <div class="home-page-introduction">
+            <h1>Welcome, {{ user.username }}!</h1>
+            <p>This is your Pharmacy Management Dashboard. Here you can manage your patients and prescriptions.</p>
+            <!-- More content related to the management system -->
+        </div>
+    {% else %}
+        <!-- User is not logged in, display PBMS introduction placeholder -->
+        <div class="landing-page-introduction">
+            <h1>Welcome to the Pharmacy Management System</h1>
+        </div>
+    {% endif %}
+{% endblock content %}
