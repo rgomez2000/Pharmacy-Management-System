@@ -1,4 +1,4 @@
-# PBMS
+# Pharmacy Management System
 
 ## Overview
 
