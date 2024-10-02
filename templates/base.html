@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Pharmacy Management System</title>
+        {% block css %}
+        {% endblock css %}
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}" />
+    </head>
+    <body>
+        <header>
+            <div class="header-section brand">
+                <h1>Team_Name</h1>
+            </div>
+            <span class="divider">|</span>
+            <div class="header-section navigation">
+                <a href="{% url 'landingPage' %}" class="nav-link">Home</a>
+                <a href="{% url 'prescriptions' %}" class="nav-link">Prescriptions</a>
+            </div>
+            <div class="header-section auth-links">
+                {% if user.is_authenticated %}
+                    <span>Hi, {{ user.username }}</span>
+                    <span class="divider">|</span>
+                    <a href="{% url 'logout' %}" class="auth-link">Logout</a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="auth-link">Register</a>
+                    <span class="divider">|</span>
+                    <a href="{% url 'login' %}" class="auth-link">Login</a>
+                {% endif %}
+            </div>
+        </header>
+        <div id="content">
+            {% block content %}
+            {% endblock content %}
+        </div>
+
+
+    </body>
+</html>
