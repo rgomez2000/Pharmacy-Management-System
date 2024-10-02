@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Prescriptions Landing Page</h1>
+{% if user.is_authenticated %}
+    <p><a href="all/">Go to all prescriptions</a></p>
+    <p><a href="add/">Manually add a prescription</a></p>
+{% else %}
+    <p>You must <a href="/accounts/login">login to an account</a> to view prescriptions inventory.</p>
+{% endif %}
+{% endblock %}
