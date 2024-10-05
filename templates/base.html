@@ -26,8 +26,6 @@
                     <span class="divider">|</span>
                     <a href="{% url 'logout' %}" class="auth-link">Logout</a>
                 {% else %}
-                    <a href="{% url 'register' %}" class="auth-link">Register</a>
-                    <span class="divider">|</span>
                     <a href="{% url 'login' %}" class="auth-link">Login</a>
                 {% endif %}
             </div>
