@@ -1,23 +1,23 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm#, RegisterForm
 
 
-def register_view(request):
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()  # Load the profile instance created by the signal
-            user.save()
-            raw_password = form.cleaned_data.get("password1")
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect("landingPage")  # Redirect to a success page.
-    else:
-        form = RegisterForm()
-    return render(request, "register.html", {"form": form})
+# def register_view(request):
+#     if request.method == "POST":
+#         form = RegisterForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             user.refresh_from_db()  # Load the profile instance created by the signal
+#             user.save()
+#             raw_password = form.cleaned_data.get("password1")
+#             user = authenticate(username=user.username, password=raw_password)
+#             login(request, user)
+#             return redirect("landingPage")  # Redirect to a success page.
+#     else:
+#         form = RegisterForm()
+#     return render(request, "register.html", {"form": form})
 
 
 def login_view(request):
