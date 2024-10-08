@@ -1,12 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from patient.models import Patient
 
-class Patient(models.Model):
-    name = models.CharField(max_length=100)
-    date_of_birth = models.DateField()
-    address = models.TextField()
-    phone = models.CharField(max_length=15)
-    email = models.EmailField()
 
 class InventoryItem(models.Model):
     name = models.CharField(max_length=100)

@@ -6,7 +6,7 @@ from .forms import PurchaseForm
 
 # Custom decorator to restrict views to cashiers only
 def is_cashier(user):
-    return user.groups.filter(name='cashiers').exists()
+    return user.groups.filter(name='Cashiers').exists()
 
 @login_required
 @user_passes_test(is_cashier)
