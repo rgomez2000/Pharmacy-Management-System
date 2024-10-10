@@ -19,6 +19,10 @@
                 <a href="{% url 'landingPage' %}" class="nav-link">Home</a>
                 <a href="{% url 'prescriptions' %}" class="nav-link">Prescriptions</a>
                 <a href="{% url 'about' %}" class="nav-link">About</a>
+                {% if user.is_authenticated %}
+                    <span class="divider">|</span>
+                    <a href="{% url 'medicine' %}" class="auth-link">Medicines</a>
+                {% endif %}
             </div>
             <div class="header-section auth-links">
                 {% if user.is_authenticated %}

@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from pages.views import about_view
+from medicine.views import drug_create_view
 
 urlpatterns = [
     path("", include("landingPage.urls")),
@@ -24,4 +25,5 @@ urlpatterns = [
     path("prescriptions/", include("prescriptions.urls")),
     path("accounts/", include("accounts.urls")),
     path('', include("pages.urls")),
+    path('', include("medicine.urls"))
 ]
