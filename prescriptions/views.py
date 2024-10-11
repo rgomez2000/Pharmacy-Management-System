@@ -28,14 +28,12 @@ def add_prescription(request):
     )  # Makes sure the form is passed to the template
 
 @login_required
-@user_passes_test(is_pharmacist)
-@user_passes_test(is_pharmacy_manager)
+@user_passes_test(is_pharmacist or is_pharmacy_manager)
 def prescriptions_main(request):
     return render(request, 'main.html')
 
 @login_required
-@user_passes_test(is_pharmacist)
-@user_passes_test(is_pharmacy_manager)
+@user_passes_test(is_pharmacist or is_pharmacy_manager)
 def prescription_list(request):
     prescriptions = Prescription.objects.all()  # Retrieves all of the prescriptions
     return render(request, 'prescription_list.html', {'prescriptions': prescriptions})
