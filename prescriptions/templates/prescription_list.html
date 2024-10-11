@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<html>
+<head>
+    <title>Prescription List</title>
+</head>
+<body>
+    <h2>Prescription List</h2>
+    
+    <!-- Loop through the prescriptions and display them -->
+    <ul>
+        {% for prescription in prescriptions %}
+            <li>
+                <strong>Patient:</strong> {{ prescription.patient_name }}<br>
+                <strong>Medication:</strong> {{ prescription.medication_name }}<br>
+                <strong>Dosage:</strong> {{ prescription.dosage }}<br>
+                <strong>Instructions:</strong> {{ prescription.instructions }}<br>
+                <strong>Doctor:</strong> {{ prescription.doctor_name }}<br>
+                <strong>Date:</strong> {{ prescription.date_prescribed }}<br>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+{% endblock %}
