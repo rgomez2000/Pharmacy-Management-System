@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'landingPage',
     'accounts',
     'pages',
-    'patient'
+    'patient',
+    'cashier',
 ]
 
 MIDDLEWARE = [
