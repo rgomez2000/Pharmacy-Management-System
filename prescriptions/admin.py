@@ -3,6 +3,6 @@ from .models import Prescription
 
 # Register your models here.
 class PrescriptionAdmin(admin.ModelAdmin):
-    list_display = ("patient_name", "medication_name", "dosage", "instructions", "doctor_name", "date_prescribed")
+    list_display = ("name", "expiry")
 
 admin.site.register(Prescription, PrescriptionAdmin)
