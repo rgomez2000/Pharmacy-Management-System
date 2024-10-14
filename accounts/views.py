@@ -5,8 +5,8 @@ from .forms import LoginForm#, RegisterForm
 
 from .models import UserProfile
 from django.contrib.auth.models import User
-from django.utils import timezone
 from django.contrib import messages
+
 
 # def register_view(request):
 #     if request.method == "POST":
@@ -24,54 +24,39 @@ from django.contrib import messages
 #     return render(request, "register.html", {"form": form})
 
 
+
 def login_view(request):
     if request.method == "POST":
         form = LoginForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            # user = authenticate(username=username, password=password)
-
-            try:
-                user = User.objects.get(username=username)
-                profile = user.userprofile
-
-                # Check for lockout
-                if profile.lockout_time and timezone.now() < profile.lockout_time:
-                    messages.error(request, "Your account is locked. Please try again later.")
-                    return render(request, "login.html", {"form": form})
-
-            except User.DoesNotExist:
-                messages.error(request, "Invalid username or password.")
-                return render(request, "login.html", {"form": form})
+            user = form.get_user()  # Get the authenticated user
+            user_profile = user.userprofile
             
+            # Successful login logic
+            user_profile.failed_login_attempts = 0
+            user_profile.save()
+            login(request, user)
+            return redirect("landingPage")
 
-
-            if user is not None:
-                # Reset failed attempts on successful login
-                profile.failed_attempts = 0
-                profile.lockout_time = None
-                profile.save()
-                login(request, user)
-                messages.success(request, "Logged in successfully!")
-                return redirect("landingPage")  # Redirect to a success page.
-            else:
-                 # Increment failed attempts
-                profile.failed_attempts += 1
-
-                if profile.failed_attempts >= 5:
-                    profile.lockout_time = timezone.now() + timezone.timedelta(minutes=.5)  # Lockout for 15 minutes
-                    messages.error(request, "Too many failed attempts. Your account is locked for 15 minutes.")
+        # Handle invalid login (failed login attempts)
+        username = form.cleaned_data.get("username")
+        if username:
+            user = User.objects.filter(username=username).first()
+            if user:
+                user_profile = user.userprofile
+                user_profile.failed_login_attempts += 1
+                
+                if user_profile.failed_login_attempts >= 5:
+                    user_profile.is_locked = True
+                    user_profile.save()
+                    messages.error(request, "Your account has been locked due to too many failed login attempts.")
                 else:
-                    messages.error(request, "Invalid username or password.")
+                    messages.error(request, "Invalid username or password")
+                user_profile.save()
 
-                profile.save()
-        else:
-            messages.error(request, "Please correct the errors below.")
     else:
         form = LoginForm()
     return render(request, "login.html", {"form": form})
-
 
 def logout_view(request):
     logout(request)
