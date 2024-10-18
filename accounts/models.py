@@ -7,7 +7,7 @@ class UserProfile(models.Model):
     is_locked = models.BooleanField(default=False)
     
     # Track wheter user has changed their password after first login
-    password_changed = models.BooleanField(default=False)
+    password_requires_change = models.BooleanField(default=True)
 
     def __str__(self):
         return self.user.username

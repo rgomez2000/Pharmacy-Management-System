@@ -35,7 +35,7 @@ def login_view(request):
 
                     # If the user needs to update their password (which occurs upon first time account login),
                     # redirect them here.
-                    if not user.userprofile.password_changed:
+                    if user.userprofile.password_requires_change:
                         return redirect("change_password")
                     
                     return redirect("admin:index")
@@ -80,7 +80,7 @@ def change_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user) 
-            user.userprofile.password_changed = True  # Update the first time login
+            user.userprofile.password_requires_change = False  # Update the first time login
             user.userprofile.save()
             messages.success(request, 'Your password was successfully updated!')
             return redirect('landingPage')

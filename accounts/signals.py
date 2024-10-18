@@ -15,7 +15,6 @@ def save_user_profile(sender, instance, **kwargs):
     if not hasattr(instance, "userprofile"):
         # Create the userprofile if one has not been created
         UserProfile.objects.create(user=instance)
-        instance.userprofile.password_changed = False
 
     if not instance.userprofile.is_locked:
         # If the account is unlocked, reset failed_login_attempts to 0
