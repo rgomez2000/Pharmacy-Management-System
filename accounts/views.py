@@ -32,11 +32,13 @@ def login_view(request):
                     user_profile.failed_login_attempts = 0
                     user_profile.save()
                     login(request, user)
+
+                    # If the user needs to update their password (which occurs upon first time account login),
+                    # redirect them here.
+                    if not user.userprofile.password_changed:
+                        return redirect("change_password")
                     
                     return redirect("admin:index")
-                # if not user.password_changed:
-                #     return redirect("change_password")
-                # return redirect("landingPage") 
 
         else:
             # If we reach here, either the provided username and/or password are invalid.
