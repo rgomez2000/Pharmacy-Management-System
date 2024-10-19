@@ -9,4 +9,4 @@ class PrescriptionForm(forms.ModelForm):
                 return SafeString(super().as_div().replace("<div>", "<div class='form-group'>"))
 
         model = Prescription
-        fields = ['patient_name', 'medication_name', 'dosage', 'instructions', 'doctor_name']
+        fields = ['patient', 'medication', 'dosage', 'instructions', 'doctor_name']
