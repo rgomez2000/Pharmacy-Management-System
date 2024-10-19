@@ -12,8 +12,8 @@
         <ul>
             {% for prescription in prescriptions %}
                 <li>
-                    <strong>Patient:</strong> {{ prescription.patient_name }}<br>
-                    <strong>Medication:</strong> {{ prescription.medication_name }}<br>
+                    <strong>Patient:</strong> {{ prescription.patient.first_name }}<br>
+                    <strong>Medication:</strong> {{ prescription.medication.drug_name }}<br>
                     <strong>Dosage:</strong> {{ prescription.dosage }}<br>
                     <strong>Instructions:</strong> {{ prescription.instructions }}<br>
                     <strong>Doctor:</strong> {{ prescription.doctor_name }}<br>
