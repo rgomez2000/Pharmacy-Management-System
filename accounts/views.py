@@ -38,7 +38,7 @@ def login_view(request):
                     if user.userprofile.password_requires_change:
                         return redirect("change_password")
                     
-                    return redirect("admin:index")
+                    return redirect("landingPage")
 
         else:
             # If we reach here, either the provided username and/or password are invalid.
