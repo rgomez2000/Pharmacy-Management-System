@@ -23,5 +23,6 @@ urlpatterns = [
     path("prescriptions/", include("prescriptions.urls")),
     path("accounts/", include("accounts.urls")),
     path('', include("pages.urls")),
-    path('drug/', include("drugs.urls"))
+    path('drug/', include("drugs.urls")),
+    path('med_inventory/', include('med_inventory.urls')),
 ]

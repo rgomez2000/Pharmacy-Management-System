@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Medication Availability</title>
+</head>
+<body>
+    <h1>Check Medication Availability</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <h2>Search Results:</h2>
+        <ul>
+            {% for medication in results %}
+                <li>{{ medication.name }}: {{ medication.availability_status }} (Quantity: {{ medication.quantity }})</li>
+            {% empty %}
+                <li>No medications found.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
