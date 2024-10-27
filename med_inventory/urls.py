@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import check_medication_availability
+from . import views
 
 urlpatterns = [
-    path('check-med/', check_medication_availability, name='check_med'),
+    path('inventory-check/', views.inventory_check, name='inventory_check'),
 ]

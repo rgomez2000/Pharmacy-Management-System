@@ -1,4 +1,4 @@
 from django import forms
 
-class MedicationSearchForm(forms.Form):
-    name = forms.CharField(label='Medication Name', max_length=255)
+class DrugSearchForm(forms.Form):
+    name = forms.CharField(label='Drug Name', max_length=255)

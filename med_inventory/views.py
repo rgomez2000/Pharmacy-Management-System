@@ -1,21 +1,32 @@
-from django.shortcuts import render
-from .models import Medication
-from .forms import MedicationSearchForm
-from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
+from django.shortcuts import render, get_object_or_404
+from .models import Stock
+from .decorators import pharmacist_required
+from drugs.models import Drug
 
-@login_required
-def check_medication_availability(request):
-    if not request.user.has_perm('inventory.can_check_inventory'):
-        raise PermissionDenied
-    
-    form = MedicationSearchForm()
-    results = None
+@pharmacist_required
+def inventory_check(request):
+    drugs = Drug.objects.all()  # Fetch all drugs
+    selected_drug = None
+    stock_qty = None
+    stock_status = None
 
-    if request.method == 'POST':
-        form = MedicationSearchForm(request.POST)
-        if form.is_valid():
-            medication_name = form.cleaned_data['name']
-            results = Medication.objects.filter(name__icontains=medication_name)
+    if request.method == 'GET' and 'drug' in request.GET:
+        selected_drug_id = request.GET['drug']
+        selected_drug = get_object_or_404(Drug, id=selected_drug_id)
 
-    return render(request, 'inventory/check_med.html', {'form': form, 'results': results})
+        # Fetch stock information for the selected drug
+        stock = Stock.objects.filter(drug=selected_drug).first()  # Get the first stock entry for the selected drug
+
+        if stock:
+            stock_qty = stock.stock_qty  
+            stock_status = stock.stock_status()
+        else:
+            stock_qty = 0  # Default to 0 if no stock entry exists
+            stock_status = "No stock entry found."
+
+    return render(request, 'inventory_check.html', {
+        'drugs': drugs,
+        'selected_drug': selected_drug,
+        'stock_qty': stock_qty,
+        'stock_status': stock_status,
+    })

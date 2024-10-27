@@ -1,20 +1,20 @@
 from django.db import models
+from drugs.models import Drug
 
-class Medication(models.Model):
-    name = models.CharField(max_length=255)
-    quantity = models.PositiveIntegerField(default=0)
+class Stock(models.Model):
+    drug = models.ForeignKey(Drug, on_delete=models.CASCADE, related_name='stocks')  # Link to the Drug model
+    stock_qty = models.PositiveIntegerField(default=0)  # Number of units available
 
     def __str__(self):
-        return self.name
+        return f"{self.drug} - {self.stock_qty} units"
 
-    @property
-    def availability_status(self):
-        if self.quantity > 10:
-            return 'In Stock'
-        elif self.quantity > 0:
-            return 'Low Stock'
+    def stock_status(self):
+        if self.stock_qty <= 0:
+            return "Out of Stock"
+        elif self.stock_qty < 10:
+            return "Low Stock"
         else:
-            return 'Out of Stock'
+            return "In Stock"
         
     class Meta:
         permissions = [

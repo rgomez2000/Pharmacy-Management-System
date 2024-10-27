@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Check</title>
+</head>
+<body>
+    <h1>Check Drug Inventory</h1>
+    
+    <form method="GET" action="{% url 'inventory_check' %}">
+        <label for="drug">Select Drug:</label>
+        <select id="drug" name="drug">
+            <option value="">--Select Drug--</option>
+            {% for drug in drugs %}
+                <option value="{{ drug.id }}"{% if selected_drug and selected_drug.id == drug.id %} selected{% endif %}>{{ drug.drug_name }}</option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit">Check Inventory</button>
+    </form>
+
+    {% if selected_drug %}
+        <h2>Inventory Details for {{ selected_drug.drug_name }}</h2>
+        <p>Stock Quantity Available: {{ selected_drug.stock_qty }}</p>
+        <p>Stock Status: {{ stock_status }}</p>
+        <p>Strength: {{ selected_drug.strength }} mg</p>
+        <p>Manufacturer: {{ selected_drug.manufacturer }}</p>
+        <p>Expiration Date: {{ selected_drug.exp_date }}</p>
+    {% endif %}
+</body>
+</html>
