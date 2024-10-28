@@ -4,6 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Check</title>
+    <style>
+        /* Button styling */
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Page styling */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        select, button {
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <h1>Check Drug Inventory</h1>
@@ -21,12 +55,15 @@
     </form>
 
     {% if selected_drug %}
-        <h2>Inventory Details for {{ selected_drug.drug_name }}</h2>
-        <p>Stock Quantity Available: {{ selected_drug.stock_qty }}</p>
-        <p>Stock Status: {{ stock_status }}</p>
-        <p>Strength: {{ selected_drug.strength }} mg</p>
-        <p>Manufacturer: {{ selected_drug.manufacturer }}</p>
-        <p>Expiration Date: {{ selected_drug.exp_date }}</p>
-    {% endif %}
+    <h2>Inventory Details for {{ selected_drug.drug_name }}</h2>
+    <p>Stock Quantity Available: {{ selected_drug.stock_qty }}</p>
+    <p>Stock Status: {{ stock_status }}</p>
+    <p>Strength: {{ selected_drug.strength }} mg</p>
+    <p>Manufacturer: {{ selected_drug.manufacturer }}</p>
+    <p>Expiration Date: {{ selected_drug.exp_date }}</p>
+{% else %}
+    <p>Please select a drug to view its inventory details.</p>
+{% endif %}
+<button onclick="window.location.href='http://127.0.0.1:8000/'">Return to Main Server Page</button>
 </body>
 </html>

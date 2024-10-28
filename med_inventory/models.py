@@ -9,6 +9,7 @@ class Stock(models.Model):
         return f"{self.drug} - {self.stock_qty} units"
 
     def stock_status(self):
+        print(f"Calculating stock status for drug {self.drug.drug_name} with stock_qty {self.stock_qty}")
         if self.stock_qty <= 0:
             return "Out of Stock"
         elif self.stock_qty < 10:
