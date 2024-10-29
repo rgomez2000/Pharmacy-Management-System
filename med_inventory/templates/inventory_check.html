@@ -56,7 +56,7 @@
 
     {% if selected_drug %}
     <h2>Inventory Details for {{ selected_drug.drug_name }}</h2>
-    <p>Stock Quantity Available: {{ selected_drug.stock_qty }}</p>
+    <p>Stock Quantity Available: {{ stock_qty }}</p>
     <p>Stock Status: {{ stock_status }}</p>
     <p>Strength: {{ selected_drug.strength }} mg</p>
     <p>Manufacturer: {{ selected_drug.manufacturer }}</p>
@@ -64,6 +64,6 @@
 {% else %}
     <p>Please select a drug to view its inventory details.</p>
 {% endif %}
-<button onclick="window.location.href='http://127.0.0.1:8000/'">Return to Main Server Page</button>
+<button onclick="window.location.href='http://127.0.0.1:8000/'">Return to Main Page</button>
 </body>
 </html>
