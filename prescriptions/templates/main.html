@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h1>Prescriptions Landing Page</h1>
+<h1>Pharmacy Awesome -- Prescriptions</h1>
 {% if user.is_authenticated %}
     <div><a href="{% url 'prescription_list' %}">View Prescription List</a></div>
     <div><a href="{% url 'add_prescription' %}">Manually add a prescription</a></div>

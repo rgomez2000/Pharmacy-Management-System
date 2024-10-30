@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django_currentuser.middleware.ThreadLocalUserMiddleware'
 ]
 
 ROOT_URLCONF = 'pharmacy.urls'
