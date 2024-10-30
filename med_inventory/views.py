@@ -10,7 +10,7 @@ def inventory_check(request):
     stock_status = None
 
 
-    if request.method == 'GET' and 'drug' in request.GET:
+    if request.method == 'GET' and 'drug' in request.GET and request.GET['drug']:
         selected_drug_id = request.GET['drug']
         selected_drug = get_object_or_404(Drug, id=selected_drug_id)
 
