@@ -22,7 +22,8 @@
                 {% load custom_filters %}
                 {% if user|is_in_group:"Pharmacy Technician,Pharmacist,Pharmacy Manager" %}
                     <span class="divider">|</span>
-                    <a href="{% url 'create_drug' %}">Drugs</a>
+                    <a href="{% url 'create_drug' %}"class="nav-link">Drugs</a>
+                    <a href="{% url 'inventory_check' %}"class="nav-link">Inventory Check</a>
                 {% else %}
                 {% endif %}
             </div>
