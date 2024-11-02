@@ -70,3 +70,21 @@ def edit_prescription(request, pk):
         form = PrescriptionForm(instance=prescription)  # Populate the form with existing data
 
     return render(request, 'edit_prescription.html', {'form': form, 'prescription': prescription})
+
+@login_required
+@user_passes_test(is_pharmacist)
+def fill_prescription(request, pk):
+    prescription = get_object_or_404(Prescription, pk=pk)
+
+    if request.method == 'POST':
+        form = PrescriptionForm(request.POST, instance=prescription)
+        if form.is_valid():
+            # Mark as filled
+            prescription.is_filled = True
+            form.save()
+            return redirect('prescription_list')  # Redirect to list view after filling
+
+    else:
+        form = PrescriptionForm(instance=prescription)  # Populate with existing data
+
+    return render(request, 'fill_prescription.html', {'form': form, 'prescription': prescription})
