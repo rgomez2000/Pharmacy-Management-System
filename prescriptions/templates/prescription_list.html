@@ -37,11 +37,11 @@
                     <strong>Instructions:</strong> {{ prescription.instructions }}<br>
                     <strong>Doctor:</strong> {{ prescription.doctor_name }}<br>
                     <strong>Date:</strong> {{ prescription.date_prescribed }}<br>
+                    {% if prescription.is_filled  %}
+                    <strong>Is Prescription Filled?</strong> {{ prescription.is_filled }}
+                    {% else %}
                     <strong>Is Prescription Filled?</strong> {{ prescription.is_filled }}<br>
 
-                    {% if prescription.is_filled  %}
-                    <p><strong>Status:</strong> Filled</p>
-                    {% else %}
                         <!-- Display buttons only if the prescription is not filled -->
                         <a href="{% url 'edit_prescription' prescription.id %}">Edit</a>
                         <a href="{% url 'delete_prescription' prescription.id %}">Delete</a>
