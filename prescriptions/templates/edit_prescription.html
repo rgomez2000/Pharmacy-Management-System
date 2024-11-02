@@ -5,7 +5,7 @@
 {% endblock css %}
 {% block content %}
 <div class="form-container">
-    <h2>Edit Prescription for {{ prescription.patient_name }}</h2>
+    <h2>Edit Prescription for {{ prescription.patient }}</h2>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}

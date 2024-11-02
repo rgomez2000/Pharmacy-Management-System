@@ -18,9 +18,9 @@
                     <strong>Instructions:</strong> {{ prescription.instructions }}<br>
                     <strong>Doctor:</strong> {{ prescription.doctor_name }}<br>
                     <strong>Date:</strong> {{ prescription.date_prescribed }}<br>
-
+                    
                     <a href="{% url 'edit_prescription' prescription.id %}">Edit</a>
-                    <a href="{% url 'delete_prescription' prescription.id %}">Delete</a>
+                    <a href="{% url 'delete_prescription' prescription.id %}">Delete</a>                    
                 </li>
                 <hr>
             {% endfor %}
