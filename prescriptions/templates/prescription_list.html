@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 {% load custom_filters %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'prescription_list.css' %}" />
+{% endblock css %}
 {% block content %}
     <html>
     <head>
@@ -8,6 +12,15 @@
     <body>
         <h2>Prescription List</h2>
         
+        <!-- Display messages if there are any -->
+        {% if messages %}
+            {% for message in messages %}
+                <div id="{% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
         {% if user|is_in_group:"Pharmacist" %}
             <p>Welcome pharmacist! You are given the ability to fill prescriptions.</p>
         {% else %}
@@ -26,7 +39,7 @@
                     <strong>Date:</strong> {{ prescription.date_prescribed }}<br>
                     <strong>Is Prescription Filled?</strong> {{ prescription.is_filled }}<br>
 
-                    {% if prescription.is_filled %}
+                    {% if prescription.is_filled  %}
                     <p><strong>Status:</strong> Filled</p>
                     {% else %}
                         <!-- Display buttons only if the prescription is not filled -->

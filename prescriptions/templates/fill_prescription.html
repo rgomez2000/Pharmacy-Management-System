@@ -5,8 +5,17 @@
 {% endblock css %}
 {% block content %}
     <div class="form-container">
-        <h2>Fill Prescription for {{ prescription.patient.name }}</h2>
+        <h2>Fill Prescription for {{ prescription.patient }}</h2>
         
+        <!-- Display messages if there are any -->
+        {% if messages %}
+            {% for message in messages %}
+                <div id="{% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <form method="POST">
             {% csrf_token %}
             {% for field in form %}
