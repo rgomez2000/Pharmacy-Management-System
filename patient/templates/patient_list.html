@@ -21,6 +21,12 @@
             {% endfor %}
         {% endif %}
 
+        <!-- Search Bar for Patients -->
+        <h3>Search for Patient by Name or Date of Birth</h3>
+         <form action="{% url 'patient_search' %}" method="get">
+            <input name="query" type="text" placeholder="Patient Name...">
+         </form>
+
         <!-- Loop through the prescriptions and display them -->
         <ul>
             {% for patient in patients %}

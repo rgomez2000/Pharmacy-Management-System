@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import redirect, render, get_object_or_404
+from django.views.generic import ListView
+from django.db.models import Q
 from .models import Patient
 from .forms import PatientForm
 
@@ -73,3 +75,11 @@ def edit_patient(request, pk):
         form = PatientForm(instance=patient)  # Populate the form with existing data
 
     return render(request, 'edit_patient.html', {'form': form, 'patient': patient})
+
+class SearchPatientsView(ListView):
+    model = Patient
+    template_name = "patient_search_results.html"
+    def get_queryset(self):
+        query = self.request.GET.get("query")
+        return Patient.objects.filter(
+            Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(dob__icontains=query))

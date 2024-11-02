@@ -29,7 +29,18 @@
             <strong>Address:</strong> {{ patient.address }}<br>
             <strong>Phone:</strong> {{ patient.phone }}<br>
             <strong>Email:</strong> {{ patient.email }}<br>
-            <strong>Insurance:</strong> {{ patient.insurance }}<br>
+            <strong>Insurance:</strong> {{ patient.insurance }}<br><br>
+            <strong>Prescriptions:</strong><br>
+                <li>
+                {% for prescription in patient.prescriptions.all %}
+                <strong>{{prescription.medication.drug_name}}</strong>
+                <ul>
+                    <strong>Filled:</strong> {{prescription.is_filled}}<br>
+                    <strong>Picked up:</strong> {{prescription.picked_up}}<br>
+                </ul>
+                {% endfor %}
+                </li>
+            
         </ul>
     </body>
     <a href="{% url 'patient_list'%}">Return to Patient List</a>

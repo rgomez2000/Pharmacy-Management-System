@@ -38,20 +38,27 @@
                     <strong>Doctor:</strong> {{ prescription.doctor_name }}<br>
                     <strong>Date:</strong> {{ prescription.date_prescribed }}<br>
                     {% if prescription.is_filled  %}
-                    <strong>Is Prescription Filled?</strong> {{ prescription.is_filled }}
+                    <strong>Is Prescription Filled?</strong> {{ prescription.is_filled }}<br>
                     {% else %}
                     <strong>Is Prescription Filled?</strong> {{ prescription.is_filled }}<br>
 
                         <!-- Display buttons only if the prescription is not filled -->
-                        <a href="{% url 'edit_prescription' prescription.id %}">Edit</a>
-                        <a href="{% url 'delete_prescription' prescription.id %}">Delete</a>
+                        <button><a href="{% url 'edit_prescription' prescription.id %}">Edit</a></button>
+                        <button><a href="{% url 'delete_prescription' prescription.id %}">Delete</a></button>
 
                         <!-- Only show Fill Prescription if the user is a pharmacist -->
                         
                         {% if user|is_in_group:"Pharmacist" %}
-                            <a href="{% url 'fill_prescription' prescription.id %}">Fill Prescription</a>
+                            <button><a href="{% url 'fill_prescription' prescription.id %}">Fill Prescription</a></button><br>
                         {% endif %}
-                    {% endif %}          
+                    {% endif %}
+                    {% if prescription.is_filled %}
+                    <strong>Is Prescription Picked Up?</strong> {{ prescription.picked_up }}<br>
+                    <!-- Display Mark as Picked Up button if the prescription has not been picked up AND it has been filled -->
+                        {% if not prescription.picked_up %}
+                    <button><a href="{% url 'pickup_prescription' prescription.id %}">Mark as Picked Up</a></button>
+                        {% endif %}
+                    {% endif %}
                 </li>
                 <hr>
             {% endfor %}
