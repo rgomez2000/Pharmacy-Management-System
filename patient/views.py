@@ -11,8 +11,13 @@ def allowed_groups(*groups):
 
 @login_required
 #@allowed_groups('Pharmacist', 'Pharmacy Manager', 'Pharmacy Technician')
+def patients_main(request):
+    return render(request, 'patients_main.html')
+
+@login_required
+#@allowed_groups('Pharmacist', 'Pharmacy Manager', 'Pharmacy Technician')
 def patient_list(request):
-    patients = Patient.objects.all()  # Retrieves all of the prescriptions
+    patients = Patient.objects.all()  # Retrieves all of the patients
     return render(request, 'patient_list.html', {'patients': patients})
 
 @login_required
