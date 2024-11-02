@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load custom_filters %}
 {% block content %}
     <html>
     <head>
@@ -8,6 +8,12 @@
     <body>
         <h2>Prescription List</h2>
         
+        {% if user|is_in_group:"Pharmacist" %}
+            <p>Welcome pharmacist! You are given the ability to fill prescriptions.</p>
+        {% else %}
+            <p>You do not have permission to fill prescriptions. Prescription Filling is only available to the Pharmacists.</p>
+        {% endif %}
+
         <!-- Loop through the prescriptions and display them -->
         <ul>
             {% for prescription in prescriptions %}
@@ -20,8 +26,19 @@
                     <strong>Date:</strong> {{ prescription.date_prescribed }}<br>
                     <strong>Is Prescription Filled?</strong> {{ prescription.is_filled }}<br>
 
-                    <a href="{% url 'edit_prescription' prescription.id %}">Edit</a>
-                    <a href="{% url 'delete_prescription' prescription.id %}">Delete</a>                    
+                    {% if prescription.is_filled %}
+                    <p><strong>Status:</strong> Filled</p>
+                    {% else %}
+                        <!-- Display buttons only if the prescription is not filled -->
+                        <a href="{% url 'edit_prescription' prescription.id %}">Edit</a>
+                        <a href="{% url 'delete_prescription' prescription.id %}">Delete</a>
+
+                        <!-- Only show Fill Prescription if the user is a pharmacist -->
+                        
+                        {% if user|is_in_group:"Pharmacist" %}
+                            <a href="{% url 'fill_prescription' prescription.id %}">Fill Prescription</a>
+                        {% endif %}
+                    {% endif %}          
                 </li>
                 <hr>
             {% endfor %}
