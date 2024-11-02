@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Pharmacy Awesome -- Patients</h1>
+{% if user.is_authenticated %}
+    <div><a href="{% url 'patient_list' %}">View Patient List</a></div>
+    <div><a href="{% url 'add_patient' %}">Register a new Patient</a></div>
+{% else %}
+    <p>You must <a href="/accounts/login">login to an account</a> to view Patients.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'prescription_list.css' %}" />
+{% endblock css %}
+{% block content %}
+    <html>
+    <head>
+        <title>Patient List</title>
+    </head>
+    <body>
+        <h2>Patient List</h2>
+        
+        <!-- Display messages if there are any -->
+        {% if messages %}
+            {% for message in messages %}
+                <div id="{% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Loop through the prescriptions and display them -->
+        <ul>
+            {% for patient in patients %}
+                <li>
+                    <strong><a href="{% url 'patient_details' patient.id %}">{{ patient.first_name }} {{ patient.last_name }}</a></strong><br>
+                    <strong>DOB:</strong> {{ patient.dob }}<br>
+                    <!--<strong>Prescriptions:</strong> {{ patient.prescriptions }}<br>-->
+
+                    <a href="{% url 'edit_patient' patient.id %}">Edit</a>
+                    <!-- Display edit only if the user is a pharmacy manager -->
+                    <a href="{% url 'delete_patient' patient.id %}">Delete</a>
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'add_patient'%}">Add a New Patient</a>
+    </body>
+    </html>
+{% endblock %}

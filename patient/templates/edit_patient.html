@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'form.css' %}" />
+{% endblock css %}
+{% block content %}
+    <div class="form-container">
+        <h2>Edit {{ patient }}</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group {{ field.name }}">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}<div class="errors">{{ field.errors }}</div>{% endif %}
+                    {% if field.help_text and not field.errors %}<div class="help-text">{{ field.help_text }}</div>{% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" name="save">Save Changes</button>
+            <button type="submit" name="cancel">Cancel</button>
+        </form>
+    </div>
+{% endblock %}
