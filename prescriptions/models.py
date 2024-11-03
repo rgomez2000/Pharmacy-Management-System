@@ -1,7 +1,6 @@
 from django.db import models
 from patient.models import Patient
 from drugs.models import Drug
-from django.contrib.auth.models import User
 from django_currentuser.db.models import CurrentUserField
 
 class Prescription(models.Model):
