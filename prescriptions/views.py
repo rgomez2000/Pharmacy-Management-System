@@ -96,3 +96,23 @@ def fill_prescription(request, pk):
         form = PrescriptionForm(instance=prescription)  # Populate with existing data
 
     return render(request, 'fill_prescription.html', {'form': form, 'prescription': prescription})
+
+@login_required
+def pickup_prescription(request, pk):
+    prescription = get_object_or_404(Prescription, pk=pk)
+
+    if request.method == 'POST':
+        form = PrescriptionForm(request.POST, instance=prescription)
+        if form.is_valid():
+            # Check to see if there is enough stock to fill the prescription
+            drug = prescription.medication # Grabs the drug that is associated with the prescription being picked up
+            drug.save()
+            # Mark prescripton as filled
+            prescription.picked_up = True
+            form.save()
+            messages.success(request, 'Prescription successfully picked up.')
+        return redirect('prescription_list')
+    else:
+        form = PrescriptionForm(instance=prescription)  # Populate with existing data
+
+    return render(request, 'pickup_prescription.html', {'form': form, 'prescription': prescription})

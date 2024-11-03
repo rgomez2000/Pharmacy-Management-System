@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends "base.html" %}
+{% block content %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Check</title>
@@ -21,14 +20,6 @@
             background-color: #45a049;
         }
 
-        /* Page styling */
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
         h1 {
             color: #333;
         }
@@ -38,8 +29,7 @@
             display: block;
         }
     </style>
-</head>
-<body>
+
     <h1>Check Drug Inventory</h1>
     
     <form method="GET" action="{% url 'inventory_check' %}">
@@ -65,5 +55,5 @@
     <p>Please select a drug to view its inventory details.</p>
 {% endif %}
 <button onclick="window.location.href='http://127.0.0.1:8000/'">Return to Main Page</button>
-</body>
-</html>
+
+{% endblock content %}

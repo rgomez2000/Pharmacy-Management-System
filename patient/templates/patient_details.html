@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'prescription_list.css' %}" />
+{% endblock css %}
+{% block content %}
+    <html>
+    <head>
+        <title>Patient Details</title>
+    </head>
+    <body>
+        <h2>Patient Details</h2>
+        
+        <!-- Display messages if there are any -->
+        {% if messages %}
+            {% for message in messages %}
+                <div id="{% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Loop through the patients and display them -->
+        <ul>
+            <strong>First Name:</strong> {{ patient.first_name }}<br>
+            <strong>Last Name:</strong> {{ patient.last_name }}<br>
+            <strong>DOB:</strong> {{ patient.dob }}<br>
+            <strong>Address:</strong> {{ patient.address }}<br>
+            <strong>Phone:</strong> {{ patient.phone }}<br>
+            <strong>Email:</strong> {{ patient.email }}<br>
+            <strong>Insurance:</strong> {{ patient.insurance }}<br><br>
+            <strong>Prescriptions:</strong><br>
+                <li>
+                {% for prescription in patient.prescriptions.all %}
+                <strong>{{prescription.medication.drug_name}}</strong>
+                <ul>
+                    <strong>Filled:</strong> {{prescription.is_filled}}<br>
+                    <strong>Picked up:</strong> {{prescription.picked_up}}<br>
+                </ul>
+                {% endfor %}
+                </li>
+            
+        </ul>
+    </body>
+    <a href="{% url 'patient_list'%}">Return to Patient List</a>
+    </html>
+{% endblock %}

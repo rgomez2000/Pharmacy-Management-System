@@ -1,14 +1,24 @@
 {% extends "base.html" %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'form.css' %}" />
+{% endblock css %}
 {% block content %}
 
-<div class="medicine-create-page">
-    <main>
-        <h1>Create New Drug</h1>
-        <form method='POST'> {% csrf_token %}
-            {{ form.as_p }} <!-- Turns the form created in django to a HTML rendered paragraph format -->
-            <input type = 'submit' value = 'Save' />
-        </form>
-    </main>
+<div class="form-container">
+    <h2>Create New Drug</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group {{ field.name }}">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}<div class="errors">{{ field.errors }}</div>{% endif %}
+                {% if field.help_text and not field.errors %}<div class="help-text">{{ field.help_text }}</div>{% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit", value="save">Add</button>
+    </form>
 </div>
 
 {% endblock content %}
