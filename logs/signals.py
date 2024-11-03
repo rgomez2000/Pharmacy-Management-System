@@ -11,7 +11,7 @@ def log_creation(sender, instance, created, **kwargs):
         PrescriptionLog.objects.create(
             pharmacist_name = instance.created_by,
             prescription_number = instance.id,
-            patient_name = instance.patient,
+            patient = instance.patient,
             date = now.date(),
             time = now.time(),
             drug_type = instance.medication.drug_class,
