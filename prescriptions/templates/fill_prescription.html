@@ -5,7 +5,16 @@
 {% endblock css %}
 {% block content %}
     <div class="form-container">
-        <h2>Edit Prescription for {{ prescription.patient }}</h2>
+        <h2>Fill Prescription for {{ prescription.patient }}</h2>
+        
+        <!-- Display messages if there are any -->
+        {% if messages %}
+            {% for message in messages %}
+                <div id="{% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
 
         <form method="POST">
             {% csrf_token %}
@@ -17,8 +26,9 @@
                     {% if field.help_text and not field.errors %}<div class="help-text">{{ field.help_text }}</div>{% endif %}
                 </div>
             {% endfor %}
-            <button type="submit" name="save">Save Changes</button>
-            <button type="submit" name="cancel">Cancel</button>
+            <button type="submit">Mark as Filled</button>
         </form>
+        
+        <button ><a href="{% url 'prescription_list' %}">Cancel</a></button>
     </div>
 {% endblock %}

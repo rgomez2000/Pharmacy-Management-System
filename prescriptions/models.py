@@ -12,6 +12,7 @@ class Prescription(models.Model):
     doctor_name = models.CharField(max_length=100)
     in_person = models.BooleanField(default=False)
     date_prescribed = models.DateTimeField(auto_now_add=True)
+    is_filled = models.BooleanField(default=False)  # New field to track if prescription is filled
     created_by = CurrentUserField()
 
     def __str__(self):
