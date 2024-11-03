@@ -46,7 +46,7 @@ def add_patient(request):
 @login_required
 @allowed_groups('Pharmacist', 'Pharmacy Manager')
 def delete_patient(request, pk):
-    # Get the prescription by primary key (pk)
+    # Get the patient by primary key (pk)
     patient = get_object_or_404(Patient, pk=pk)
 
     if request.method == 'POST':

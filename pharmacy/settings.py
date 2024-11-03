@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'patient',
     'cashier',
     'drugs',
+    'logs',
     'med_inventory'
 ]
 

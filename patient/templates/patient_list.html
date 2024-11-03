@@ -27,13 +27,12 @@
             <input name="query" type="text" placeholder="Patient Name...">
          </form>
 
-        <!-- Loop through the prescriptions and display them -->
+        <!-- Loop through the patients and display them -->
         <ul>
             {% for patient in patients %}
                 <li>
                     <strong><a href="{% url 'patient_details' patient.id %}">{{ patient.first_name }} {{ patient.last_name }}</a></strong><br>
                     <strong>DOB:</strong> {{ patient.dob }}<br>
-                    <!--<strong>Prescriptions:</strong> {{ patient.prescriptions }}<br>-->
 
                     <a href="{% url 'edit_patient' patient.id %}">Edit</a>
                     <!-- Display edit only if the user is a pharmacy manager -->
