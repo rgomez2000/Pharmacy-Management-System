@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from drugs.models import Drug
 from django.core.cache import cache
+from django.contrib import messages
+from .models import Order
 
 # Custom decorator to check if the user is in allowed groups
 def allowed_groups(*groups):
@@ -31,3 +33,15 @@ def inventory_check(request):
         'stock_qty': stock_qty,
         'stock_status': stock_status,
     })
+
+def order_medication(request):
+    if request.method == 'POST' and 'drug_id' in request.POST:
+        drug_id = request.POST['drug_id']
+        order_qty = int(request.POST['order_qty'])
+        drug = get_object_or_404(Drug, id=drug_id)
+
+        Order.objects.create(drug=drug, quantity=order_qty)
+        
+        # Set a success message
+        messages.success(request, f"Order for {drug.drug_name} of {order_qty} units was successful!")
+    return redirect ('inventory_check')
