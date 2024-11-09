@@ -27,6 +27,9 @@
                     <a href="{% url 'patients_main' %}" class="nav-link">Patients</a>
                 {% else %}
                 {% endif %}
+                {% if user|is_in_group:"Pharmacy Manager" %}
+                <a href="{% url 'receiving_main' %}" class="nav-link">Receiving</a>
+                {% endif %}
             </div>
 
             <div class="header-section auth-links">
