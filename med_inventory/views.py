@@ -47,7 +47,7 @@ def inventory_check(request):
         'stock_status': stock_status,
         'quantity_on_order': quantity_on_order,
     })
-
+@allowed_groups('Pharmacy Manager')
 def manager_dash(request):
     # Clear old notifications to avoid duplicates
     Notification.objects.all().delete()
@@ -69,7 +69,7 @@ def manager_dash(request):
         'notifications': notifications,
     })
 
-
+@allowed_groups('Pharmacist', 'Pharmacy Manager')
 def order_medication(request):
     if request.method == 'POST' and 'drug_id' in request.POST:
         drug_id = request.POST['drug_id']
