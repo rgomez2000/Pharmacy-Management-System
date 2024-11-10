@@ -65,7 +65,7 @@ def manager_dash(request):
 
     # Retrieve notifications for display
     notifications = Notification.objects.all().order_by('-created_at')
-    return render(request, 'manager.html', {
+    return render(request, 'manager_dash.html', {
         'notifications': notifications,
     })
 
