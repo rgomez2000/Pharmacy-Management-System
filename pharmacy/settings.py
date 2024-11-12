@@ -63,6 +63,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'pharmacy.urls'
 
+LOGIN_REDIRECT_URL = 'manager_dashboard'  # Redirect to the manager's dashboard upon login
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
