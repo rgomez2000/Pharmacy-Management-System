@@ -5,6 +5,8 @@ from django.core.cache import cache
 from django.contrib import messages
 from django.db.models import Sum
 from med_inventory.models import Notification, Order
+from django.utils import timezone
+from datetime import timedelta
 
 # Custom decorator to check if the user is in allowed groups
 def allowed_groups(*groups):
@@ -52,21 +54,41 @@ def manager_dash(request):
     # Clear old notifications to avoid duplicates
     Notification.objects.all().delete()
 
-    # Check each drug's stock level and create new notifications if stock is low
+    # Retrieve all drugs
     drugs = Drug.objects.all()
+
     for drug in drugs:
+        # Check each drug's stock level and create new notifications if stock is low
         if drug.stock_qty < LOW_STOCK_THRESHOLD:
             urgency = "High" if drug.stock_qty < LOW_STOCK_THRESHOLD / 2 else "Moderate"
             Notification.objects.create(
                 drug=drug,
                 stock_level=drug.stock_qty,
-                urgency=urgency
+                urgency=urgency,
+                notification_type = "stock"
+            )
+        
+        # Check for the expiration date and create new notification if a drug expires within 30 days
+        if drug.exp_date and drug.exp_date <= timezone.now().date() + timedelta(days=30):
+            if drug.exp_date <= timezone.now().date() + timedelta(days=7):
+                urgency = "High"
+            else:
+                urgency = "Moderate"
+
+            Notification.objects.create(
+                drug = drug,
+                urgency = urgency,
+                notification_type = "expiring",
             )
 
-    # Retrieve notifications for display
-    notifications = Notification.objects.all().order_by('-created_at')
+    # Retrieve types of notifications for display
+    low_stock_notifications = Notification.objects.filter(notification_type="stock").order_by('-created_at')
+    expiring_notifications = Notification.objects.filter(notification_type="expiring").order_by('-created_at')
+
+    # Render the template with all notification types
     return render(request, 'manager_dash.html', {
-        'notifications': notifications,
+        'low_stock_notifications': low_stock_notifications,
+        'expiring_notifications' : expiring_notifications,
     })
 
 @allowed_groups('Pharmacist', 'Pharmacy Manager')

@@ -25,10 +25,11 @@
                     <a href="{% url 'inventory_check' %}"class="nav-link">Inventory Check</a>
                     <a href="{% url 'prescriptions' %}" class="nav-link">Prescriptions</a>
                     <a href="{% url 'patients_main' %}" class="nav-link">Patients</a>
-                    <a href="{% url 'manager_dash' %}" class="nav-link">Manager Dashboard</a>
+                    
                 {% else %}
                 {% endif %}
                 {% if user|is_in_group:"Pharmacy Manager" %}
+                <a href="{% url 'manager_dash' %}" class="nav-link">Manager Dashboard</a>
                 <a href="{% url 'receiving_main' %}" class="nav-link">Receiving</a>
                 {% endif %}
             </div>
