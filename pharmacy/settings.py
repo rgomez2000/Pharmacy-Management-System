@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'cashier',
     'drugs',
     'logs',
-    'med_inventory'
+    'med_inventory',
+    'receiving'
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'pharmacy.urls'
+
+LOGIN_REDIRECT_URL = 'manager_dashboard'  # Redirect to the manager's dashboard upon login
 
 TEMPLATES = [
     {
