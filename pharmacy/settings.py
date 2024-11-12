@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'cashier',
     'drugs',
     'logs',
-    'med_inventory'
+    'med_inventory',
+    'receiving'
 ]
 
 MIDDLEWARE = [
