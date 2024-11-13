@@ -44,35 +44,25 @@
     <h2>Notifications</h2>
     <!-- Check if there are any notifications at all -->
     {% if low_stock_notifications or expiring_notifications %}
-        
-            <!-- Display Low Stock Notifications -->
-            {% if low_stock_notifications %}
-            
-                {% for notification in low_stock_notifications %}
-                <hr>
-                    <li>
-                        <strong>{{ notification.drug.drug_name }}</strong>: 
-                        {{ notification.stock_level }} units left - 
-                        Urgency: {{ notification.urgency }}
-                    </li>
-                {% endfor %}
-            
-            {% endif %}
+        <!-- Display Low Stock Notifications -->
+        {% for notification in low_stock_notifications %}
+        <hr>
+            <li>
+                <strong>{{ notification.drug.drug_name }}</strong>: 
+                {{ notification.stock_level }} units left - 
+                Urgency: {{ notification.urgency }}
+            </li>
+        {% endfor %}
 
-            <!-- Display Expiration Notifications -->
-            {% if expiring_notifications %}
-            
-                {% for notification in expiring_notifications %}
-                <hr>
-                    <li>
-                        <strong>{{ notification.drug.drug_name }}</strong>: 
-                        Expiring on {{ notification.drug.exp_date|date:"F j, Y" }} - 
-                        Urgency: {{ notification.urgency }}
-                    </li>
-                {% endfor %}
-                
-            
-            {% endif %}
+        <!-- Display Expiration Notifications -->
+        {% for notification in expiring_notifications %}
+        <hr>
+            <li>
+                <strong>{{ notification.drug.drug_name }}</strong>: 
+                Expiring on {{ notification.drug.exp_date|date:"F j, Y" }} - 
+                Urgency: {{ notification.urgency }}
+            </li>
+        {% endfor %}
     {% else %}
         <p>No new notifications at this time.</p>
     {% endif %}
