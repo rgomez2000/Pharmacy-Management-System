@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
+from datetime import timedelta
+from django.utils import timezone
 from .forms import PrescriptionForm
 from .models import Prescription
 
@@ -72,12 +74,25 @@ def edit_prescription(request, pk):
 @allowed_groups('Pharmacist')
 def fill_prescription(request, pk):
     prescription = get_object_or_404(Prescription, pk=pk)
+    drug = prescription.medication
+
+    # Calculate the warning period (30 days before expiration)
+    expiration_warning_date = drug.exp_date - timedelta(days=30)
+    today = timezone.now().date()  # Get the current date
+
+     # Check if the drug is expired
+    if today > drug.exp_date:
+        messages.error(request, f"Cannot fill the prescription. The drug '{drug.drug_name}' has expired.")
+        return redirect('prescription_list')
+    
+    # Check if the drug is close to expiring (within 30 days)
+    elif today >= expiration_warning_date:
+        messages.warning(request, f"Warning: The drug '{drug.drug_name}' is close to expiring on {drug.exp_date}.")
 
     if request.method == 'POST':
         form = PrescriptionForm(request.POST, instance=prescription)
         if form.is_valid():
             # Check to see if there is enough stock to fill the prescription
-            drug = prescription.medication # Grabs the drug that is associated with the prescription being filled
             required_dosage = int(prescription.dosage) # Converts the dosage to an Int
             if drug.stock_qty >= required_dosage:
                 # Will update the stock amount by deducting the stock from the prescription amount needed
