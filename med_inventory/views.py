@@ -7,7 +7,7 @@ from django.db.models import Sum
 from med_inventory.models import Notification, Order
 from django.utils import timezone
 from datetime import timedelta
-from django.urls import reverse
+from logs.models import DrugDeletionLog
 
 # Custom decorator to check if the user is in allowed groups
 def allowed_groups(*groups):
@@ -108,6 +108,14 @@ def manager_dash(request):
 @allowed_groups('Pharmacy Manager')
 def remove_expired_drug(request, drug_id):
     drug = get_object_or_404(Drug, id=drug_id)
+
+    DrugDeletionLog.objects.create(
+        deleted_by = request.user,
+        drug_name = drug,
+        event_type='deleted',
+        description=f"Drug: {drug.drug_name} was deleted.",
+    )
+
     drug.delete()  
     messages.success(request, f"The drug '{drug.drug_name}' has been removed from inventory.")
     return redirect('manager_dash')
