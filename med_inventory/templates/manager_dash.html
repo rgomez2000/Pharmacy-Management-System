@@ -63,12 +63,31 @@
                 Urgency: {{ notification.urgency }}
             </li>
         {% endfor %}
+    
     {% else %}
         <p>No new notifications at this time.</p>
     {% endif %}
+
+    {% if expired_notifications %}
+    <h3>Expired Drugs</h3>
+        {% for notification in expired_notifications %}
+            <li>
+                <strong>{{ notification.drug.drug_name }}</strong>: Expired on {{ notification.drug.exp_date|date:"F j, Y" }}
+                <!-- Remove button to delete expired drugs -->
+                <a href="{% url 'remove_expired_drug' notification.drug.id %}" onclick="return confirm('Are you sure you want to remove this expired drug?');">
+                    <button>Remove</button>
+                </a>
+            </li>
+        {% endfor %}
+
+    {% else %}
+        <p>No expired drugs at this time.</p>
+    {% endif %}
     <hr>
 
-<button onclick="window.location.href='http://127.0.0.1:8000/'">Return to Main Page</button>
+
+    
+
 </body>
 </html>
 {% endblock content %}
