@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'form.css' %}" />
+{% endblock css %}
+{% block content %}
+
+<div class="form-container">
+    <h2>Purchasing</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add item to Transaction</button>
+    </form>
+    <button><a href="{% url 'checkout' purchase.id %}">Checkout</a></button><br>
+
+    {% load get_details %}
+    <h2>Current Transaction</h2>
+    {% for item in purchase.items.all %}
+        {% with details=item|get_item_details:purchase %}
+        <li>{{details.quantity}} {{item}} @ ${{item.price}}</li>
+        {% endwith %}
+    {% endfor %}
+    <h3>Subtotal: ${{purchase.total_cost}}</h3>
+</div>
+
+{% endblock %}

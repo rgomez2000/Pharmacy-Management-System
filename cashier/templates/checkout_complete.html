@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'form.css' %}" />
+{% endblock css %}
+{% block content %}
+
+<h2>Purchase Successful!</h2>
+<p>The purchase has been successfully processed.</p>
+<a href="{% url 'transaction' %}">New Purchase</a>
+
+{% endblock %}
