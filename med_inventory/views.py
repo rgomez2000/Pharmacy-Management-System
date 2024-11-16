@@ -7,6 +7,7 @@ from django.db.models import Sum
 from med_inventory.models import Notification, Order
 from django.utils import timezone
 from datetime import timedelta
+from logs.models import DrugDeletionLog
 
 # Custom decorator to check if the user is in allowed groups
 def allowed_groups(*groups):
@@ -49,6 +50,7 @@ def inventory_check(request):
         'stock_status': stock_status,
         'quantity_on_order': quantity_on_order,
     })
+
 @allowed_groups('Pharmacy Manager')
 def manager_dash(request):
     # Clear old notifications to avoid duplicates
@@ -68,8 +70,15 @@ def manager_dash(request):
                 notification_type = "stock"
             )
         
+        # Check for expired drugs first.
+        if drug.exp_date <= timezone.now().date():
+            Notification.objects.create(
+                drug = drug,
+                urgency = "Expired",
+                notification_type="expired",
+            )
         # Check for the expiration date and create new notification if a drug expires within 30 days
-        if drug.exp_date and drug.exp_date <= timezone.now().date() + timedelta(days=30):
+        elif drug.exp_date <= timezone.now().date() + timedelta(days=30):
             if drug.exp_date <= timezone.now().date() + timedelta(days=7):
                 urgency = "High"
             else:
@@ -81,15 +90,35 @@ def manager_dash(request):
                 notification_type = "expiring",
             )
 
+
     # Retrieve types of notifications for display
     low_stock_notifications = Notification.objects.filter(notification_type="stock").order_by('-created_at')
     expiring_notifications = Notification.objects.filter(notification_type="expiring").order_by('-created_at')
+    expired_notifications = Notification.objects.filter(notification_type="expired").order_by('-created_at')
 
     # Render the template with all notification types
     return render(request, 'manager_dash.html', {
         'low_stock_notifications': low_stock_notifications,
         'expiring_notifications' : expiring_notifications,
+        'expired_notifications': expired_notifications,
     })
+
+
+# Delete the expired drug from the database
+@allowed_groups('Pharmacy Manager')
+def remove_expired_drug(request, drug_id):
+    drug = get_object_or_404(Drug, id=drug_id)
+
+    DrugDeletionLog.objects.create(
+        deleted_by = request.user,
+        drug_name = drug,
+        event_type='deleted',
+        description=f"Drug: {drug.drug_name} was deleted.",
+    )
+
+    drug.delete()  
+    messages.success(request, f"The drug '{drug.drug_name}' has been removed from inventory.")
+    return redirect('manager_dash')
 
 @allowed_groups('Pharmacist', 'Pharmacy Manager')
 def order_medication(request):
