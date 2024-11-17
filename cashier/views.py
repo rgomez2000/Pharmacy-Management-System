@@ -63,7 +63,7 @@ def prescription_transaction(request, pk=None):
     patient = purchase.patient
 
     if request.method == 'POST':
-        form = PrescriptionPurchaseForm(request.POST, {"instance" : purchase, "patient" : patient})
+        form = PrescriptionPurchaseForm(request.POST, instance=purchase)
         if form.is_valid():
             data = form.cleaned_data
             purchase.prescriptions.add(data["prescription"])
@@ -77,6 +77,7 @@ def prescription_transaction(request, pk=None):
             return redirect(f'/purchasing/transaction/{purchase.id}')
     else:
         form = PrescriptionPurchaseForm()
+        form.filter_patient(patient)
     return render(request, 'prescription_transaction.html', {'form': form, 'purchase': purchase})
 
 def checkout(request, pk):
@@ -90,6 +91,10 @@ def checkout(request, pk):
             for item in purchase.items.all():
                 item.quantity -= item.purchaseditemdetails_set.get(purchase=purchase).quantity
                 item.save()
+            
+            for prescription in purchase.prescriptions.all():
+                prescription.picked_up = True
+                prescription.save()
             return redirect('checkout_complete')
     else:
         form = CheckoutForm(instance=purchase)

@@ -20,13 +20,8 @@ class PrescriptionPurchaseForm(forms.ModelForm):
         model = Purchase
         fields = ['prescription']
     
-    def __init__(self, *args, **kwargs):
-        # Overwrite the standard __init__ method to make the
-        # "prescription" field only have choices associated with
-        # the previously selected patient
-        super().__init__(*args, **kwargs)
-        if "patient" in kwargs:
-            self.fields['prescription'].queryset = Prescription.objects.filter(patient=kwargs["patient"])
+    def filter_patient(self, patient):
+        self.fields['prescription'].queryset = Prescription.objects.filter(is_filled=True, patient=patient, picked_up=False)
 
 class CheckoutForm(forms.ModelForm):
     class Meta:
