@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Purchase, PurchasedItemDetails
 from .forms import PurchaseForm, CheckoutForm, PatientSelectForm, PrescriptionPurchaseForm
+from django.contrib import messages
 
 def transaction(request, pk=None):
     if pk is not None:
@@ -17,12 +18,19 @@ def transaction(request, pk=None):
             # Check if this item has previously been added to this purchase first
             try:
                 details = PurchasedItemDetails.objects.get(item=data["item"], purchase=purchase)
-                # If yes, update the quantity of that item in the purchase
+                # If yes, check if the newly requested quantity surpasses the amount we have in inventory
+                if details.quantity + data["quantity"] > data["item"].quantity:
+                    messages.error(request, f"Quantity requested surpasses amount available. Remaining inventory = {data['item'].quantity - details.quantity}")
+                    return redirect(f'/purchasing/transaction/{purchase.id}')
+                # If all good, update the quantity of that item in the purchase
                 details.quantity += data["quantity"]
                 details.save()
-                print(details.quantity)
             except ObjectDoesNotExist:
-                # if not, create an instance of the through model PurchasedItemDetails
+                # if the item has not been added yet, create an instance of the through model PurchasedItemDetails
+                # (but first, still need to check if requested quantity is allowed)
+                if data["quantity"] > data["item"].quantity:
+                    messages.error(request, f"Quantity requested surpasses amount available. Remaining inventory = {data['item'].quantity}")
+                    return redirect(f'/purchasing/transaction/{purchase.id}')
                 PurchasedItemDetails.objects.create(item=data["item"], purchase=purchase, quantity=data["quantity"])
 
             # Calculate and update total cost for this purchase
@@ -78,6 +86,10 @@ def checkout(request, pk):
         form = CheckoutForm(request.POST, instance=purchase)
         if form.is_valid():
             purchase = form.save(commit=True)
+            # Deduct all purchased items' quantities from their available stock
+            for item in purchase.items.all():
+                item.quantity -= item.purchaseditemdetails_set.get(purchase=purchase).quantity
+                item.save()
             return redirect('checkout_complete')
     else:
         form = CheckoutForm(instance=purchase)
