@@ -12,15 +12,30 @@
         {{ form.as_p }}
         <button type="submit">Add item to Transaction</button>
     </form>
+    <button>
+        {% if purchase.patient is not None %}
+        <a href="{% url 'prescription_transaction' purchase.id %}">Add Prescription to Transaction</a></button><br>
+        {% else %}
+        <a href="{% url 'select_patient' purchase.id %}">Add Prescription to Transaction</a></button><br>
+        {% endif %}
     <button><a href="{% url 'checkout' purchase.id %}">Checkout</a></button><br>
 
     {% load get_details %}
     <h2>Current Transaction</h2>
-    {% for item in purchase.items.all %}
-        {% with details=item|get_item_details:purchase %}
-        <li>{{details.quantity}} {{item}} @ ${{item.price}}</li>
-        {% endwith %}
-    {% endfor %}
+    {% if purchase.items.all %}
+    <h4>Non-Prescription Items</h4>
+        {% for item in purchase.items.all %}
+            {% with details=item|get_item_details:purchase %}
+            <li>{{details.quantity}} {{item}} @ ${{item.price}}</li>
+            {% endwith %}
+        {% endfor %}
+    {% endif %}
+    {% if purchase.prescriptions.all %}
+    <h4>Prescriptions</h4>
+        {% for prescription in purchase.prescriptions.all %}
+            <li>{{prescription}} @ ${{prescription.price}}</li>
+        {% endfor %}
+    {% endif %}
     <h3>Subtotal: ${{purchase.total_cost}}</h3>
 </div>
 

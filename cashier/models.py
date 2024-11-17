@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from patient.models import Patient
+from prescriptions.models import Prescription
 
 class InventoryItem(models.Model):
     name = models.CharField(max_length=100)
@@ -13,6 +14,7 @@ class InventoryItem(models.Model):
 
 class Purchase(models.Model):
     items = models.ManyToManyField(InventoryItem, through="PurchasedItemDetails")
+    prescriptions = models.ManyToManyField(Prescription)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
     purchase_date = models.DateTimeField(default=timezone.now)
     total_cost = models.DecimalField(max_digits=10, decimal_places=2)
