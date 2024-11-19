@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Pharmacy Awesome -- Point of Sale</h1>
+{% if user.is_authenticated %}
+    <div><a href="{% url 'transaction' %}">Make new Transaction</a></div>
+{% else %}
+    <p>You must <a href="/accounts/login">login to an account</a> to access the point of sale system.</p>
+{% endif %}
+{% endblock %}

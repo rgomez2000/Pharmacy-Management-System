@@ -26,5 +26,6 @@ urlpatterns = [
     path('drug/', include("drugs.urls")),
     path('med_inventory/', include('med_inventory.urls')),
     path('patients/', include('patient.urls')),
-    path('receiving/', include('receiving.urls'))
+    path('receiving/', include('receiving.urls')),
+    path('purchasing/', include('cashier.urls'))
 ]

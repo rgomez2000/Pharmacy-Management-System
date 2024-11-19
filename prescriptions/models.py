@@ -11,6 +11,7 @@ class Prescription(models.Model):
     doctor_name = models.CharField(max_length=100)
     in_person = models.BooleanField(default=False)
     date_prescribed = models.DateTimeField(auto_now_add=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     is_filled = models.BooleanField(default=False)  # New field to track if prescription is filled
     picked_up = models.BooleanField(default=False)  # New field to track if prescription has been picked up by patient
     created_by = CurrentUserField()
