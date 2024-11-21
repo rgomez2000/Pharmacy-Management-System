@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'form.css' %}" />
+{% endblock css %}
+{% block content %}
+
+<h1>Receipt</h1>
+<p>Transaction Date: {{ receipt.transaction_date }}</p>
+<p>Payment Method: {{ receipt.payment_type }}</p>
+<p>Total Amount: ${{ receipt.total_amount }}</p>
+{% if receipt.cash_given %}
+    <p>Cash Given: ${{ receipt.cash_given }}</p>
+    <p>Change: ${{ receipt.change }}</p>
+{% endif %}
+<a href="{% url 'transaction' %}">New Purchase</a>
+
+{% endblock %}

@@ -7,10 +7,24 @@
 
 <div class="form-container">
     <h2>Checkout</h2>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Finalize Transaction</button>
     </form>
+
+    {% if change_due is not None %}
+    <p class="success-message">Change due: ${{ change_due }}</p>
+{% endif %}
+
 </div>
 {% endblock %}
