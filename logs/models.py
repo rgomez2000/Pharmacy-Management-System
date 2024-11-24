@@ -55,7 +55,7 @@ class InventoryLog(models.Model):
     user = CurrentUserField()
     old_quantity = models.PositiveIntegerField()
     new_quantity = models.PositiveIntegerField()
-    date = models.DateField()
+    date = models.DateField(auto_now_add=True)
     time = models.TimeField(auto_now_add=True)  
     change_reason = models.CharField(max_length=42,null=True, blank=True)
 

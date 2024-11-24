@@ -8,7 +8,7 @@ from med_inventory.models import Notification, Order
 from django.utils import timezone
 from datetime import timedelta
 from logs.models import DrugDeletionLog, InventoryLog
-from cashier.models import Receipt
+from cashier.models import Receipt, PurchasedItemDetails
 from datetime import datetime
 
 # Custom decorator to check if the user is in allowed groups
@@ -170,8 +170,29 @@ def reports_main(request):
                         "borderWidth": 1
                     })
         
-        # elif report_type == "fiancial":
+        elif report_type == "financial":
+            # gather $ value sold by product each day
+            _receipts = [_receipt for _receipt in Receipt.objects.all() if start_date <= datetime.strftime(_receipt.transaction_date.date(), "%Y-%m-%d") <= end_date]
+            _receipts = sorted(_receipts, key=lambda _receipt: _receipt.transaction_date)
 
+            for receipt in reversed(_receipts):
+                if receipt.transaction_date.date() not in labels:
+                    labels.append(receipt.transaction_date.date())
+                
+                for item in receipt.purchase.items.all():
+                    details = PurchasedItemDetails.objects.get(item=item, purchase=receipt.purchase)
+                    for data_set in datasets:
+                        if data_set["label"] == item and len(data_set["data"]) != len(labels):
+                            data_set["data"].insert(0, float(details.quantity*item.price))
+                            break
+                        elif data_set["label"] == item:
+                            break
+                    else:
+                        datasets.append({
+                            "label": item,
+                            "data": [float(details.quantity*item.price)],
+                            "borderWidth": 1
+                        })
 
     return render(request, 'reports.html', {
         'report_type': report_type,
