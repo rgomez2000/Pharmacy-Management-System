@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from patient.models import Patient
 from prescriptions.models import Prescription
+from django.contrib.auth.models import User
 
 class InventoryItem(models.Model):
     name = models.CharField(max_length=100)
@@ -29,3 +30,19 @@ class PurchasedItemDetails(models.Model):
     item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE, null=True)
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=1)
+
+
+class Receipt(models.Model):
+    purchase = models.OneToOneField(Purchase, on_delete=models.CASCADE, related_name="receipt")
+    pharmacy_name = models.CharField(max_length=255, default="Pharmacy Awesome")
+    pharmacy_address = models.TextField(default="1209 E 2nd St #100")
+    pharmacy_phone = models.CharField(max_length=20, default="(520) 855-3010")
+    processed_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)  # Staff member processing transaction
+    payment_type = models.CharField(max_length=50, choices=[('credit_card', 'Credit Card'), ('debit_card', 'Debit Card'), ('cash', 'Cash')])
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    cash_given = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    change = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    transaction_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Receipt #{self.id} - {self.transaction_date.strftime('%Y-%m-%d %H:%M:%S')}"

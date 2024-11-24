@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import InventoryItem, Purchase, PurchasedItemDetails
+from .models import InventoryItem, Purchase, PurchasedItemDetails, Receipt
 
 # Register your models here.
 class PurchaseInline(admin.TabularInline):
@@ -14,3 +14,4 @@ class InventoryItemAdmin(admin.ModelAdmin):
 
 admin.site.register(InventoryItem, InventoryItemAdmin)
 admin.site.register(Purchase, PurchaseAdmin)
+admin.site.register(Receipt)

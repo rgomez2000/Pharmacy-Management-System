@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+{% load get_details %}
+<html>
+<head>
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+        }
+        h1, h3 {
+            text-align: center;
+        }
+        .details, .items, .totals {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .return-home {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .return-home button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .return-pos button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Hide the Return to Home button during printing */
+        @media print {
+            .return-pos {
+                display: none !important;
+            }
+        }
+    
+    </style>
+    <script>
+        // Automatically print the page when it loads
+        window.onload = function () {
+            window.print();
+        };
+    </script>
+</head>
+<body>
+    <h1>Pharmacy Awesome</h1>
+    <p>1209 E 2nd St #100</p>
+    <p>Tucson, AZ 85721</p>
+    <p>Phone: <a href="tel:(520)855-3010">(520) 855-3010</a></p>
+    <p>Email: <a href="mailto:contact@pharmacy.com">contact@pharmacy.com</a></p>
+    <p>Fax: (520) 123-5813</p>
+    <hr>
+    <h3>Transaction Details</h3>
+    <div class="details">
+        <p><strong>Date:</strong> {{ receipt.transaction_date }}</p>
+        <p><strong>Processed By:</strong> {{ receipt.processed_by.get_full_name|default:receipt.processed_by.username }}</p>
+        <p><strong>Payment Method:</strong> {{ receipt.payment_type }}</p>
+    </div>
+    <h3>Itemized Purchases</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in receipt.purchase.items.all %}
+            {% with details=item|get_item_details:receipt.purchase %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ details.quantity }}</td>
+                <td>${{ item.price }}</td>
+                <td>${{ details.quantity|mul:item.price|floatformat:2 }}</td>
+            </tr>
+            {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="totals">
+        <p><strong>Subtotal:</strong> ${{ receipt.total_amount }}</p>
+        {% if receipt.cash_given %}
+        <p><strong>Cash Given:</strong> ${{ receipt.cash_given }}</p>
+        <p><strong>Change:</strong> ${{ receipt.change }}</p>
+        {% endif %}
+    </div>
+    <hr>
+    <div class="footer">
+        <p>Thank you for your purchase!</p>
+    </div>
+
+    <!-- Return to Home Button -->
+    <div class="return-pos">
+        <button onclick="window.location.href='{% url 'point_of_sale' %}'">Return to Point of Sale</button>
+    </div>
+</body>
+</html>
