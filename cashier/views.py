@@ -111,6 +111,43 @@ def checkout(request, pk):
                     change_due = receipt.change  # Show the already calculated change
                 return render(request, 'checkout.html', {'form': form, 'purchase': purchase, 'change_due': change_due})
 
+            # Check for signature if prescriptions are included
+            if includes_prescription:
+                signature_data_url = request.POST.get('signature_image')
+                if not signature_data_url or signature_data_url.strip() == "":
+                    messages.error(request, 'Signature is required for prescriptions.')
+                    return render(request, 'checkout.html', {
+                        'form': form,
+                        'purchase': purchase,
+                        'change_due': change_due,
+                        'includes_prescription': includes_prescription,
+                    })
+
+                # Save the signature image from the form (base64 string)
+                if signature_data_url.startswith('data:image'):
+                    header, encoded = signature_data_url.split(",", 1)
+                else:
+                    encoded = signature_data_url
+
+                img_data = base64.b64decode(encoded) # Decode the base64 string
+                image = Image.open(BytesIO(img_data)) # Create a PIL image from the byte data
+
+                image_directory = os.path.join(settings.MEDIA_ROOT, 'signatures') # Defining the directory to store images
+
+                # Ensure the directory exists
+                if not os.path.exists(image_directory):
+                    os.makedirs(image_directory)
+
+                # Creating unique filename
+                formatted_date = purchase.purchase_date.strftime('%Y-%m-%d_%H-%M-%S')
+                image_filename = f"{purchase.patient}_{formatted_date}.png"
+                image_path = os.path.join(image_directory, image_filename)
+                
+                image.save(image_path)
+                # Store the image path
+                purchase.signature_image = os.path.join('signatures', image_filename)
+                purchase.save()
+                
             # Create a new Receipt if one doesn't exist
             receipt = Receipt(
                 purchase=purchase,
@@ -142,34 +179,6 @@ def checkout(request, pk):
             for prescription in purchase.prescriptions.all():
                 prescription.picked_up = True
                 prescription.save()
-
-            # Save the signature image from the form (base64 string)
-            signature_data_url = request.POST.get('signature_image')
-            if signature_data_url:
-                # Remove the prefix (if any) of the base64 string (like 'data:image/png;base64,')
-                if signature_data_url.startswith('data:image'):
-                    header, encoded = signature_data_url.split(",", 1)
-                else:
-                    encoded = signature_data_url
-
-                img_data = base64.b64decode(encoded) # Decode the base64 string
-                image = Image.open(BytesIO(img_data)) # Create a PIL image from the byte data
-
-                image_directory = os.path.join(settings.MEDIA_ROOT, 'signatures') # Defining the directory to store images
-
-                # Ensure the directory exists
-                if not os.path.exists(image_directory):
-                    os.makedirs(image_directory)
-
-                # Creating unique filename
-                formatted_date = purchase.purchase_date.strftime('%Y-%m-%d_%H-%M-%S')
-                image_filename = f"{purchase.patient}_{formatted_date}.png"
-                image_path = os.path.join(image_directory, image_filename)
-                
-                image.save(image_path)
-                # Store the image path or URL in your model
-                purchase.signature_image = os.path.join('signatures', image_filename)
-                purchase.save()
 
             # Redirect to the receipt detail page
             return redirect('receipt_detail', pk=purchase.id)

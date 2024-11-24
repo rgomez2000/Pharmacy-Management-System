@@ -20,7 +20,7 @@ class Purchase(models.Model):
     purchase_date = models.DateTimeField(default=timezone.now)
     total_cost = models.DecimalField(max_digits=10, decimal_places=2)
     quantity_sold = models.PositiveBigIntegerField(default=1)
-    signature_image = models.ImageField(upload_to='signatures/', blank=True, null=True) # Store signatures
+    signature_image = models.ImageField(upload_to='signatures/', blank=False, null=True) # Store signatures
 
     def __str__(self):
         return f"Purchase on {self.purchase_date}"
