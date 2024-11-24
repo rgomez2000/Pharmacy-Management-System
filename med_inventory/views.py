@@ -7,7 +7,9 @@ from django.db.models import Sum
 from med_inventory.models import Notification, Order
 from django.utils import timezone
 from datetime import timedelta
-from logs.models import DrugDeletionLog
+from logs.models import DrugDeletionLog, InventoryLog
+from cashier.models import Receipt
+from datetime import datetime
 
 # Custom decorator to check if the user is in allowed groups
 def allowed_groups(*groups):
@@ -140,13 +142,41 @@ def reports_main(request):
     report_type = None
     start_date = None
     end_date = None
-    if request.method == 'GET' and 'report_type' in request.GET and request.GET['report_type']:
+    labels = []
+    datasets = []
+    if request.method == 'GET' and 'report_type' in request.GET:
         report_type = request.GET['report_type']
         start_date = request.GET['start_date']
         end_date = request.GET['end_date']
+
+        if report_type == "inventory":
+
+            _logs = [_log for _log in InventoryLog.objects.all() if start_date <= datetime.strftime(_log.date, "%Y-%m-%d") <= end_date]
+            _logs = sorted(_logs, key=lambda _log: _log.date)
+            
+            for log in reversed(_logs):
+                if log.date not in labels:
+                    labels.append(log.date)
+                for data_set in datasets:
+                    if data_set["label"] == log.item and len(data_set["data"]) != len(labels):
+                        data_set["data"].insert(0, log.new_quantity)
+                        break
+                    elif data_set["label"] == log.item:
+                        break
+                else:
+                    datasets.append({
+                        "label": log.item,
+                        "data": [log.new_quantity],
+                        "borderWidth": 1
+                    })
+        
+        # elif report_type == "fiancial":
+
 
     return render(request, 'reports.html', {
         'report_type': report_type,
         'start_date': start_date,
         'end_date': end_date,
+        'labels': reversed(labels),
+        'datasets': reversed(datasets)
     })
