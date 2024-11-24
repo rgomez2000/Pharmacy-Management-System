@@ -82,12 +82,14 @@ def log_account_lock(sender, instance, created, **kwargs):
         )
 
 # Log account unlock event
-@receiver(post_save, sender=UserProfile)
-def log_account_unlock(sender, instance, created, **kwargs):
-    # Only log if the account is unlocked and it's not a new user being created
-    if not created and hasattr(instance, '_previous_is_locked'):
-        # Check if the account was previously locked and is now unlocked
-        if instance._previous_is_locked and not instance.is_locked:
+@receiver(pre_save, sender=UserProfile)
+def log_account_unlock(sender, instance, **kwargs):
+    if instance.pk:# Only check for changes if the item already exists
+        # Get the previous value of `is_locked`
+        previous_is_locked = UserProfile.objects.get(pk=instance.pk).is_locked
+        
+        # If the account was previously locked and is now unlocked, log the event
+        if previous_is_locked and not instance.is_locked:
             now = timezone.now()
             AccountActivityLog.objects.create(
                 user=instance.user,
@@ -145,7 +147,7 @@ def log_new_drug(sender, instance, created, **kwargs):
             change_reason="New drug added"
         )
 
-# Log changes in drug quantity (handled with pre_save, before drug is saved)
+# Log drug changes
 @receiver(pre_save, sender=Drug)
 def log_drug_change(sender, instance, **kwargs):
     if instance.pk:  # Only check for changes if the drug already exists
