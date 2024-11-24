@@ -51,6 +51,19 @@
                 display: none !important;
             }
         }
+        
+        .signature-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .signature-container img {
+            max-width: 50%; 
+            height: auto;
+            {% comment %} border: 1px solid #000; {% endcomment %}
+        }
     
     </style>
     <script>
@@ -104,7 +117,20 @@
         <p><strong>Change:</strong> ${{ receipt.change }}</p>
         {% endif %}
     </div>
+    <!-- Signature Section -->
+    {% if receipt.purchase.signature_image %}
+    <div class="signature">
+        
+        <div class="signature-container">
+            <img src="{{ receipt.purchase.signature_image.url }}" alt="Customer Signature">
+        </div>
+    </div>
     <hr>
+    <h3>Customer Signature</h3>
+    {% else %}
+    <hr>
+    {% endif %}
+    
     <div class="footer">
         <p>Thank you for your purchase!</p>
     </div>
