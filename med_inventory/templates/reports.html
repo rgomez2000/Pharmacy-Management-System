@@ -46,7 +46,8 @@
     <label for="report_type">Select Report Type:</label>
     <select id="report_type" name="report_type">
         <option value="">--Report Type--</option>
-        <option value="inventory"{% if report_type == "inventory" %} selected{% endif %}>Inventory</option>
+        <option value="inventory_drugs"{% if report_type == "inventory_drugs" %} selected{% endif %}>Inventory (Drugs)</option>
+        <option value="inventory_other"{% if report_type == "inventory_other" %} selected{% endif %}>Inventory (Non-Prescription Items)</option>
         <option value="financial"{% if report_type == "financial" %} selected{% endif %}>Financial</option>
     </select>
     <br>
@@ -60,7 +61,7 @@
 </form>
 
 {% load utils %}
-{% if report_type == "inventory" %}
+{% if report_type == "inventory_other" %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div>
     <canvas id="inventory_chart"></canvas>
@@ -94,6 +95,46 @@
             title: {
                 display: true,
                 text: "Inventory by Product from {{ start_date }} to {{ end_date }}"
+            }
+        }
+      }
+    });
+</script>
+
+{% elif report_type == "inventory_drugs" %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div>
+    <canvas id="inventory_drug_chart"></canvas>
+</div>
+<script>
+    const ctx = document.getElementById('inventory_drug_chart');
+  
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [{% for label in labels %}"{{label}}",{% endfor %}],
+        datasets: [
+            {% for data_set in datasets %}
+                {% with values=data_set.values|to_list %}
+                {
+                    label: "{{values|get:0}}",
+                    data: {{values|get:1}},
+                    borderWidth: {{values|get:2}}
+                },
+                {% endwith %}
+            {% endfor %}
+        ]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: "Inventory by Medicine from {{ start_date }} to {{ end_date }}"
             }
         }
       }

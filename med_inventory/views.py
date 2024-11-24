@@ -7,7 +7,7 @@ from django.db.models import Sum
 from med_inventory.models import Notification, Order
 from django.utils import timezone
 from datetime import timedelta
-from logs.models import DrugDeletionLog, InventoryLog
+from logs.models import DrugDeletionLog, InventoryLog, DrugLog
 from cashier.models import Receipt, PurchasedItemDetails, PurchasedPrescriptionDetails
 from datetime import datetime
 
@@ -149,7 +149,7 @@ def reports_main(request):
         start_date = request.GET['start_date']
         end_date = request.GET['end_date']
 
-        if report_type == "inventory":
+        if report_type == "inventory_other":
 
             _logs = [_log for _log in InventoryLog.objects.all() if start_date <= datetime.strftime(_log.date, "%Y-%m-%d") <= end_date]
             _logs = sorted(_logs, key=lambda _log: _log.date)
@@ -198,16 +198,36 @@ def reports_main(request):
                     details = PurchasedPrescriptionDetails.objects.get(prescription=prescription, purchase=receipt.purchase)
                     for data_set in datasets:
                         if data_set["label"] == prescription and len(data_set["data"]) != len(labels):
-                            data_set["data"].insert(0, prescription.price)
+                            data_set["data"].insert(0, float(prescription.price))
                             break
                         elif data_set["label"] == prescription:
                             break
                     else:
                         datasets.append({
                             "label": prescription,
-                            "data": [prescription.price],
+                            "data": [float(prescription.price)],
                             "borderWidth": 1
                         })
+        
+        elif report_type == "inventory_drugs":
+            _logs = [_log for _log in DrugLog.objects.all() if start_date <= datetime.strftime(_log.date, "%Y-%m-%d") <= end_date]
+            _logs = sorted(_logs, key=lambda _log: _log.date)
+            
+            for log in reversed(_logs):
+                if log.date not in labels:
+                    labels.append(log.date)
+                for data_set in datasets:
+                    if data_set["label"] == log.drug and len(data_set["data"]) != len(labels):
+                        data_set["data"].insert(0, log.new_quantity)
+                        break
+                    elif data_set["label"] == log.drug:
+                        break
+                else:
+                    datasets.append({
+                        "label": log.drug,
+                        "data": [log.new_quantity],
+                        "borderWidth": 1
+                    })
 
     return render(request, 'reports.html', {
         'report_type': report_type,
