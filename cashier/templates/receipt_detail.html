@@ -28,6 +28,30 @@
         th {
             background-color: #f4f4f4;
         }
+        .return-home {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .return-home button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .return-pos button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Hide the Return to Home button during printing */
+        @media print {
+            .return-pos {
+                display: none !important;
+            }
+        }
+    
     </style>
     <script>
         // Automatically print the page when it loads
@@ -37,9 +61,12 @@
     </script>
 </head>
 <body>
-    <h1>{{ receipt.pharmacy_name }}</h1>
-    <p>{{ receipt.pharmacy_address }}</p>
-    <p>{{ receipt.pharmacy_phone }}</p>
+    <h1>Pharmacy Awesome</h1>
+    <p>1209 E 2nd St #100</p>
+    <p>Tucson, AZ 85721</p>
+    <p>Phone: <a href="tel:(520)855-3010">(520) 855-3010</a></p>
+    <p>Email: <a href="mailto:contact@pharmacy.com">contact@pharmacy.com</a></p>
+    <p>Fax: (520) 123-5813</p>
     <hr>
     <h3>Transaction Details</h3>
     <div class="details">
@@ -80,6 +107,11 @@
     <hr>
     <div class="footer">
         <p>Thank you for your purchase!</p>
+    </div>
+
+    <!-- Return to Home Button -->
+    <div class="return-pos">
+        <button onclick="window.location.href='{% url 'point_of_sale' %}'">Return to Point of Sale</button>
     </div>
 </body>
 </html>
