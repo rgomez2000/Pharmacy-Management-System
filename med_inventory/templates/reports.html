@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'prescription_list.css' %}" />
+{% endblock css %}
+{% block content %}
+
+<style>
+    /* Button styling */
+    button {
+        padding: 10px 15px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    select, button {
+        margin-top: 10px;
+        display: block;
+    }
+</style>
+
+<h2>Report Generator</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <p style="color: green;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<!-- Form to select a report type and date range -->
+<form method="GET" action="{% url 'reports' %}">
+    <label for="report_type">Select Report Type:</label>
+    <select id="report_type" name="report_type">
+        <option value="">--Report Type--</option>
+        <option value="inventory"{% if report_type == "inventory" %} selected{% endif %}>Inventory</option>
+        <option value="financial"{% if report_type == "financial" %} selected{% endif %}>Financial</option>
+    </select>
+    <br>
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+    <br>
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+
+    <button type="submit">Generate Report</button>
+</form>
+
+
+{% endblock content %}

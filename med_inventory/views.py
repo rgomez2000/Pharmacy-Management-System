@@ -132,3 +132,21 @@ def order_medication(request):
         # Set a success message
         messages.success(request, f"Order for {drug.drug_name} of {order_qty} units was successful!")
     return redirect ('inventory_check')
+
+@allowed_groups('Pharmacy Manager')
+def reports_main(request):
+
+    cache.clear()
+    report_type = None
+    start_date = None
+    end_date = None
+    if request.method == 'GET' and 'report_type' in request.GET and request.GET['report_type']:
+        report_type = request.GET['report_type']
+        start_date = request.GET['start_date']
+        end_date = request.GET['end_date']
+
+    return render(request, 'reports.html', {
+        'report_type': report_type,
+        'start_date': start_date,
+        'end_date': end_date,
+    })
