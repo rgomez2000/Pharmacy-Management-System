@@ -4,6 +4,13 @@ from .models import Purchase, PurchasedItemDetails, Receipt
 from .forms import PurchaseForm, PatientSelectForm, PrescriptionPurchaseForm, PaymentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from PIL import Image
+from io import BytesIO
+import base64
+from django.conf import settings
+import os
+
 
 
 def transaction(request, pk=None):
@@ -85,9 +92,11 @@ def prescription_transaction(request, pk=None):
 def checkout(request, pk):
     purchase = get_object_or_404(Purchase, pk=pk)
     change_due = None  # Initialize change_due to be None
+    includes_prescription = purchase.prescriptions.exists() # Check if there are prescriptions
 
     if request.method == 'POST':
         form = PaymentForm(request.POST)
+
         if form.is_valid():
             payment_type = form.cleaned_data['payment_type']
             total_amount = purchase.total_cost
@@ -134,12 +143,45 @@ def checkout(request, pk):
                 prescription.picked_up = True
                 prescription.save()
 
+            # Save the signature image from the form (base64 string)
+            signature_data_url = request.POST.get('signature_image')
+            if signature_data_url:
+                # Remove the prefix (if any) of the base64 string (like 'data:image/png;base64,')
+                if signature_data_url.startswith('data:image'):
+                    header, encoded = signature_data_url.split(",", 1)
+                else:
+                    encoded = signature_data_url
+
+                img_data = base64.b64decode(encoded) # Decode the base64 string
+                image = Image.open(BytesIO(img_data)) # Create a PIL image from the byte data
+
+                image_directory = os.path.join(settings.MEDIA_ROOT, 'signatures') # Defining the directory to store images
+
+                # Ensure the directory exists
+                if not os.path.exists(image_directory):
+                    os.makedirs(image_directory)
+
+                # Creating unique filename
+                formatted_date = purchase.purchase_date.strftime('%Y-%m-%d_%H-%M-%S')
+                image_filename = f"{purchase.patient}_{formatted_date}.png"
+                image_path = os.path.join(image_directory, image_filename)
+                
+                image.save(image_path)
+                # Store the image path or URL in your model
+                purchase.signature_image = os.path.join('signatures', image_filename)
+                purchase.save()
+
             # Redirect to the receipt detail page
             return redirect('receipt_detail', pk=purchase.id)
     else:
         form = PaymentForm()
 
-    return render(request, 'checkout.html', {'form': form, 'purchase': purchase, 'change_due': change_due})
+    return render(request, 'checkout.html', {
+        'form': form, 
+        'purchase': purchase, 
+        'change_due': change_due, 
+        'includes_prescription':includes_prescription,
+        })
 
 def point_of_sale(request):
     return render(request, 'point_of_sale.html')
