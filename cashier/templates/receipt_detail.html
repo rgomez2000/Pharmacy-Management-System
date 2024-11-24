@@ -95,6 +95,14 @@
             </tr>
             {% endwith %}
             {% endfor %}
+            {% for prescription in receipt.purchase.prescriptions.all %}
+            <tr>
+                <td>{{ prescription }}</td>
+                <td>1</td>
+                <td>${{ prescription.price }}</td>
+                <td>${{ prescription.price }}</td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
     <div class="totals">

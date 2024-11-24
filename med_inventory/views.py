@@ -8,7 +8,7 @@ from med_inventory.models import Notification, Order
 from django.utils import timezone
 from datetime import timedelta
 from logs.models import DrugDeletionLog, InventoryLog
-from cashier.models import Receipt, PurchasedItemDetails
+from cashier.models import Receipt, PurchasedItemDetails, PurchasedPrescriptionDetails
 from datetime import datetime
 
 # Custom decorator to check if the user is in allowed groups
@@ -191,6 +191,21 @@ def reports_main(request):
                         datasets.append({
                             "label": item,
                             "data": [float(details.quantity*item.price)],
+                            "borderWidth": 1
+                        })
+                
+                for prescription in receipt.purchase.prescriptions.all():
+                    details = PurchasedPrescriptionDetails.objects.get(prescription=prescription, purchase=receipt.purchase)
+                    for data_set in datasets:
+                        if data_set["label"] == prescription and len(data_set["data"]) != len(labels):
+                            data_set["data"].insert(0, prescription.price)
+                            break
+                        elif data_set["label"] == prescription:
+                            break
+                    else:
+                        datasets.append({
+                            "label": prescription,
+                            "data": [prescription.price],
                             "borderWidth": 1
                         })
 
