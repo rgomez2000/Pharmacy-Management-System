@@ -15,7 +15,7 @@ class InventoryItem(models.Model):
 
 class Purchase(models.Model):
     items = models.ManyToManyField(InventoryItem, through="PurchasedItemDetails")
-    prescriptions = models.ManyToManyField(Prescription)
+    prescriptions = models.ManyToManyField(Prescription, through="PurchasedPrescriptionDetails")
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
     purchase_date = models.DateTimeField(default=timezone.now)
     total_cost = models.DecimalField(max_digits=10, decimal_places=2)
@@ -32,6 +32,11 @@ class PurchasedItemDetails(models.Model):
     purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, null=True)
     quantity = models.PositiveIntegerField(default=1)
 
+class PurchasedPrescriptionDetails(models.Model):
+    # "Through" class model which allows us to access details on the items contained
+    # within each purchase object
+    prescription = models.ForeignKey(Prescription, on_delete=models.CASCADE, null=True)
+    purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, null=True)
 
 class Receipt(models.Model):
     purchase = models.OneToOneField(Purchase, on_delete=models.CASCADE, related_name="receipt")

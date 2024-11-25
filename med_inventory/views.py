@@ -7,7 +7,9 @@ from django.db.models import Sum
 from med_inventory.models import Notification, Order
 from django.utils import timezone
 from datetime import timedelta
-from logs.models import DrugDeletionLog
+from logs.models import DrugDeletionLog, InventoryLog, DrugLog
+from cashier.models import Receipt, PurchasedItemDetails, PurchasedPrescriptionDetails
+from datetime import datetime
 
 # Custom decorator to check if the user is in allowed groups
 def allowed_groups(*groups):
@@ -132,3 +134,105 @@ def order_medication(request):
         # Set a success message
         messages.success(request, f"Order for {drug.drug_name} of {order_qty} units was successful!")
     return redirect ('inventory_check')
+
+@allowed_groups('Pharmacy Manager')
+def reports_main(request):
+
+    cache.clear()
+    report_type = None
+    start_date = None
+    end_date = None
+    labels = []
+    datasets = []
+    if request.method == 'GET' and 'report_type' in request.GET:
+        report_type = request.GET['report_type']
+        start_date = request.GET['start_date']
+        end_date = request.GET['end_date']
+
+        if report_type == "inventory_other":
+
+            _logs = [_log for _log in InventoryLog.objects.all() if start_date <= datetime.strftime(_log.date, "%Y-%m-%d") <= end_date]
+            _logs = sorted(_logs, key=lambda _log: _log.date)
+            
+            for log in reversed(_logs):
+                if log.date not in labels:
+                    labels.append(log.date)
+                for data_set in datasets:
+                    if data_set["label"] == log.item and len(data_set["data"]) != len(labels):
+                        data_set["data"].insert(0, log.new_quantity)
+                        break
+                    elif data_set["label"] == log.item:
+                        break
+                else:
+                    datasets.append({
+                        "label": log.item,
+                        "data": [log.new_quantity],
+                        "borderWidth": 1
+                    })
+        
+        elif report_type == "financial":
+            # gather $ value sold by product each day
+            _receipts = [_receipt for _receipt in Receipt.objects.all() if start_date <= datetime.strftime(_receipt.transaction_date.date(), "%Y-%m-%d") <= end_date]
+            _receipts = sorted(_receipts, key=lambda _receipt: _receipt.transaction_date)
+
+            for receipt in reversed(_receipts):
+                if receipt.transaction_date.date() not in labels:
+                    labels.append(receipt.transaction_date.date())
+                
+                for item in receipt.purchase.items.all():
+                    details = PurchasedItemDetails.objects.get(item=item, purchase=receipt.purchase)
+                    for data_set in datasets:
+                        if data_set["label"] == item and len(data_set["data"]) != len(labels):
+                            data_set["data"].insert(0, float(details.quantity*item.price))
+                            break
+                        elif data_set["label"] == item:
+                            break
+                    else:
+                        datasets.append({
+                            "label": item,
+                            "data": [float(details.quantity*item.price)],
+                            "borderWidth": 1
+                        })
+                
+                for prescription in receipt.purchase.prescriptions.all():
+                    details = PurchasedPrescriptionDetails.objects.get(prescription=prescription, purchase=receipt.purchase)
+                    for data_set in datasets:
+                        if data_set["label"] == prescription and len(data_set["data"]) != len(labels):
+                            data_set["data"].insert(0, float(prescription.price))
+                            break
+                        elif data_set["label"] == prescription:
+                            break
+                    else:
+                        datasets.append({
+                            "label": prescription,
+                            "data": [float(prescription.price)],
+                            "borderWidth": 1
+                        })
+        
+        elif report_type == "inventory_drugs":
+            _logs = [_log for _log in DrugLog.objects.all() if start_date <= datetime.strftime(_log.date, "%Y-%m-%d") <= end_date]
+            _logs = sorted(_logs, key=lambda _log: _log.date)
+            
+            for log in reversed(_logs):
+                if log.date not in labels:
+                    labels.append(log.date)
+                for data_set in datasets:
+                    if data_set["label"] == log.drug and len(data_set["data"]) != len(labels):
+                        data_set["data"].insert(0, log.new_quantity)
+                        break
+                    elif data_set["label"] == log.drug:
+                        break
+                else:
+                    datasets.append({
+                        "label": log.drug,
+                        "data": [log.new_quantity],
+                        "borderWidth": 1
+                    })
+
+    return render(request, 'reports.html', {
+        'report_type': report_type,
+        'start_date': start_date,
+        'end_date': end_date,
+        'labels': reversed(labels),
+        'datasets': reversed(datasets)
+    })

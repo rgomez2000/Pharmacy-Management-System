@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Purchase, PurchasedItemDetails, Receipt
+from .models import Purchase, PurchasedItemDetails, Receipt, PurchasedPrescriptionDetails
 from .forms import PurchaseForm, PatientSelectForm, PrescriptionPurchaseForm, PaymentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -75,7 +75,7 @@ def prescription_transaction(request, pk=None):
         form = PrescriptionPurchaseForm(request.POST, instance=purchase)
         if form.is_valid():
             data = form.cleaned_data
-            purchase.prescriptions.add(data["prescription"])
+            PurchasedPrescriptionDetails.objects.create(prescription=data["prescription"], purchase=purchase)
             # Calculate and update total cost for this purchase
             purchase.total_cost += data["prescription"].price
             # Update the quantity of the purchase with the total quantity of items added so far

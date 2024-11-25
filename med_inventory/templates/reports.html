@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'prescription_list.css' %}" />
+{% endblock css %}
+{% block content %}
+
+<style>
+    /* Button styling */
+    button {
+        padding: 10px 15px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    select, button {
+        margin-top: 10px;
+        display: block;
+    }
+</style>
+
+<h2>Report Generator</h2>
+
+{% if messages %}
+    {% for message in messages %}
+        <p style="color: green;">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<!-- Form to select a report type and date range -->
+<form method="GET" action="{% url 'reports' %}">
+    <label for="report_type">Select Report Type:</label>
+    <select id="report_type" name="report_type">
+        <option value="">--Report Type--</option>
+        <option value="inventory_drugs"{% if report_type == "inventory_drugs" %} selected{% endif %}>Inventory (Drugs)</option>
+        <option value="inventory_other"{% if report_type == "inventory_other" %} selected{% endif %}>Inventory (Non-Prescription Items)</option>
+        <option value="financial"{% if report_type == "financial" %} selected{% endif %}>Financial</option>
+    </select>
+    <br>
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+    <br>
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+
+    <button type="submit">Generate Report</button>
+</form>
+
+{% load utils %}
+{% if report_type == "inventory_other" %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div>
+    <canvas id="inventory_chart"></canvas>
+</div>
+<script>
+    const ctx = document.getElementById('inventory_chart');
+  
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [{% for label in labels %}"{{label}}",{% endfor %}],
+        datasets: [
+            {% for data_set in datasets %}
+                {% with values=data_set.values|to_list %}
+                {
+                    label: "{{values|get:0}}",
+                    data: {{values|get:1}},
+                    borderWidth: {{values|get:2}}
+                },
+                {% endwith %}
+            {% endfor %}
+        ]
+      },
+      options: {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Date"
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "Units in Stock"
+                }
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: "Inventory by Product from {{ start_date }} to {{ end_date }}"
+            }
+        }
+      }
+    });
+</script>
+
+{% elif report_type == "inventory_drugs" %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div>
+    <canvas id="inventory_drug_chart"></canvas>
+</div>
+<script>
+    const ctx = document.getElementById('inventory_drug_chart');
+  
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: [{% for label in labels %}"{{label}}",{% endfor %}],
+        datasets: [
+            {% for data_set in datasets %}
+                {% with values=data_set.values|to_list %}
+                {
+                    label: "{{values|get:0}}",
+                    data: {{values|get:1}},
+                    borderWidth: {{values|get:2}}
+                },
+                {% endwith %}
+            {% endfor %}
+        ]
+      },
+      options: {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Date"
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "Units in Stock"
+                }
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: "Inventory by Medicine from {{ start_date }} to {{ end_date }}"
+            }
+        }
+      }
+    });
+</script>
+
+{% elif report_type == "financial" %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div>
+    <canvas id="financial_chart"></canvas>
+</div>
+<script>
+    const ctx = document.getElementById('financial_chart');
+  
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [{% for label in labels %}"{{label}}",{% endfor %}],
+        datasets: [
+            {% for data_set in datasets %}
+                {% with values=data_set.values|to_list %}
+                {
+                    label: "{{values|get:0}}",
+                    data: {{values|get:1}},
+                    borderWidth: {{values|get:2}}
+                },
+                {% endwith %}
+            {% endfor %}
+        ]
+      },
+      options: {
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Date"
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "USD ($)"
+                }
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: "Sales by Product from {{ start_date }} to {{ end_date }}"
+            }
+        }
+      }
+    });
+</script>
+{% else %}
+    <p>Please select a report type.</p>
+{% endif %}
+
+{% endblock content %}
