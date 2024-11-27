@@ -1,92 +1,62 @@
 {% extends "base.html" %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'inventory.css' %}" />
+{% endblock css %}
 {% block content %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Check</title>
-
     <script>
         function orderSuccess() {
             alert("Order successful!");
         }
     </script>
-</head>
-<body>
+<div class="form-container">
+    <body>
+        <h1>Check Drug Inventory</h1>
 
-    <style>
-        /* Button styling */
-        button {
-            padding: 10px 15px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        select, button {
-            margin-top: 10px;
-            display: block;
-        }
-    </style>
-
-
-    <h1>Check Drug Inventory</h1>
-
-    {% if messages %}
-        {% for message in messages %}
-            <p style="color: green;">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-    
-    <!-- Form to select a drug -->
-    <form method="GET" action="{% url 'inventory_check' %}">
-        <label for="drug">Select Drug:</label>
-        <select id="drug" name="drug">
-            <option value="">--Select Drug--</option>
-            {% for drug in drugs %}
-                <option value="{{ drug.id }}"{% if selected_drug and selected_drug.id == drug.id %} selected{% endif %}>{{ drug.drug_name }}</option>
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color: green;">{{ message }}</p>
             {% endfor %}
-        </select>
+        {% endif %}
         
-        <button type="submit">Check Inventory</button>
-    </form>
+        <!-- Form to select a drug -->
+        <form class="form-group" method="GET" action="{% url 'inventory_check' %}">
+            <label for="drug">Select Drug:</label>
+            <select id="drug" name="drug">
+                <option value="">--Select Drug--</option>
+                {% for drug in drugs %}
+                    <option value="{{ drug.id }}"{% if selected_drug and selected_drug.id == drug.id %} selected{% endif %}>{{ drug.drug_name }}</option>
+                {% endfor %}
+            </select>
+            
+            <button type="submit">Check Inventory</button>
+        </form>
 
-     <!-- Display inventory details if a drug is selected -->
-    {% if selected_drug %}
-    <h2>Inventory Details for {{ selected_drug.drug_name }}</h2>
-    <p>Stock Quantity Available: {{ stock_qty }}</p>
-    <p>Stock Status: {{ stock_status }}</p>
-    <p>Quantity on Order: {{ quantity_on_order }}</p>
-    <p>Strength: {{ selected_drug.strength }} mg</p>
-    <p>Manufacturer: {{ selected_drug.manufacturer }}</p>
-    <p>Expiration Date: {{ selected_drug.exp_date }}</p>
-{% else %}
-    <p>Please select a drug to view its inventory details.</p>
-{% endif %}
-<button onclick="window.location.href='http://127.0.0.1:8000/'">Return to Main Page</button>
-
-
- <!-- Show "Order Now" form with quantity input if stock is low or out -->
-{% if stock_status == "Low Stock" or stock_status == "Out of Stock" %}
-            <form method="POST" action="{% url 'order_medication' %}">
-                {% csrf_token %}
-                <input type="hidden" name="drug_id" value="{{ selected_drug.id }}">
-                <label for="order_qty">Quantity to Order:</label>
-                <input type="number" id="order_qty" name="order_qty" min="120" required>
-                <button type="submit">Order Now</button>
-            </form>
+        <!-- Display inventory details if a drug is selected -->
+        {% if selected_drug %}
+        <h3>Inventory Details for {{ selected_drug.drug_name }} </h3>
+        <p><strong>Stock Quantity Available:</strong>  {{ stock_qty }}</p>
+        <p><strong>Stock Status:</strong>  {{ stock_status }}</p>
+        <p><strong>Quantity on Order:</strong>  {{ quantity_on_order }}</p>
+        <p><strong>Strength:</strong>  {{ selected_drug.strength }} mg</p>
+        <p><strong>Manufacturer:</strong>  {{ selected_drug.manufacturer }}</p>
+        <p><strong>Expiration Date:</strong> {{ selected_drug.exp_date }}</p>
+    {% else %}
+        <p>Please select a drug to view its inventory details.</p>
     {% endif %}
-</body>
-</html>
+
+
+    <!-- Show "Order Now" form with quantity input if stock is low or out -->
+    {% if stock_status == "Low Stock" or stock_status == "Out of Stock" %}
+                <form class="form-group" method="POST" action="{% url 'order_medication' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="drug_id" value="{{ selected_drug.id }}">
+                    <label for="order_qty">Quantity to Order:</label>
+                    <input type="number" id="order_qty" name="order_qty" min="120" required>
+                    <button type="submit">Order Now</button>
+                </form>
+        {% endif %}
+    </body>
+</div>
 
 {% endblock content %}
