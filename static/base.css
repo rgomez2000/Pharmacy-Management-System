@@ -1,10 +1,16 @@
-body {
-    font-family: Arial, sans-serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     height: 100vh;
+    background-color: #eff0f3;
 }
 
 #content {
@@ -13,57 +19,83 @@ body {
     overflow: auto;
 }
 
-header {
+.header {
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 100px;
+    background-color: white;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid;
-    padding: 0.5rem 1rem;
+    z-index: 100;
+    border-bottom: 2px solid;
+    padding: 1rem 1rem;
 }
 
-.header-section {
-    display: flex;
-    align-items: center;
+.logo {
+    font-size: 24px;
+    color: black;
+    text-decoration: none;
+    font-weight: 700;
+    height: 70%;
+    width: auto;
+    max-width: 100%;
 }
 
-.brand,
+.logo,
 .navigation,
 .auth-links {
     display: inline-flex;
     align-items: center;
 }
 
-.brand h1 {
-    margin: 0;
-    font-size: 24px;
-}
 
 .navigation {
     margin-right: auto;
 }
 
 .nav-link {
+    position: relative;
+    font-size: 17px;
+    color: black;
     margin-right: 25px;
     text-decoration: none;
-}
-
-.divider {
-    margin: 0 10px;
-    color: #aaa;
-    font-weight: normal;
+    font-weight: 550;
 }
 
 .auth-link {
+    position: relative;
+    font-size: 17px;
+    color: black;
     text-decoration: none;
+    font-weight: 550;
 }
 
-.nav-link:hover .auth-link:hover {
-    text-decoration: underline;
+.nav-link::before, .auth-link::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: #ff8e3c;
+    transition: .4s;
 }
 
-a {
-    text-decoration: none;
+.nav-link:hover::before, .auth-link:hover::before {
+    width: 100%;
 }
 
-.button-group {
-    padding: 10px;
+.divider {
+    width: 2px;
+    height: 20px;
+    background-color: black;
+    margin: 0 10px;
+    opacity: 0.5;
+  }
+
+.greeting {
+    font-weight: 550;
 }
+
