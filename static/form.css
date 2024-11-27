@@ -5,6 +5,10 @@
     padding: 20px;
     border: 1px solid;
     border-radius: 5px;
+    background-color: #fff;
+    border-color: #ccc;
+    color: #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .form-container h2 {
@@ -25,6 +29,8 @@
     margin-top: 10px;
     /* Smooth transition effect */
     transition: background-color 0.3s;
+    color: #fff;
+    background-color: #007bff;
 }
 
 .form-group {
@@ -82,19 +88,6 @@
 .form-container .form-group:last-child {
     /* Remove bottom margin from the last form group */
     margin-bottom: 0;
-}
-
-
-.form-container {
-    background-color: #fff;
-    border-color: #ccc;
-    color: #000;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.form-container button {
-    color: #fff;
-    background-color: #007bff;
 }
 
 .form-group input,
