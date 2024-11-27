@@ -1,16 +1,94 @@
 {% extends "base.html" %}
+
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'landingPage.css' %}" />
+{% endblock %}
+
 {% block content %}
     {% if user.is_authenticated %}
         <!-- User is logged in, display management system placeholder -->
         <div class="home-page-introduction">
             <h1>Welcome, {{ user.username }}!</h1>
             <p>This is your Pharmacy Management Dashboard. Here you can manage your patients and prescriptions.</p>
+            <p>Click one of the options within the navigation bar to see information pertaining to that field.</p>
             <!-- More content related to the management system -->
         </div>
     {% else %}
         <!-- User is not logged in, display PBMS introduction placeholder -->
-        <div class="landing-page-introduction">
-            <h1>Welcome to the Pharmacy Management System</h1>
-        </div>
+        <section class="home section" id="home">
+            <div class="home_container container grid">
+                <div class="home_data">
+                    <h1 class="home_title"> Welcome to Pharmacy Awesome.</h1>
+
+                    <p class="home_descripiton">
+                        Pharmacy Awesome provides a holisitic
+                        solution to your pharmacy management 
+                        needs by having all necessary systems 
+                        neatly packed into one easy to navigate 
+                        product.
+                    <p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about section" id="home">
+            <div class="about_container container grid">
+                <div class="about_data">
+                    <h1 class="about_title"> Learn more about Pharmacy Awesome</h1>
+
+                    <p class="about_description">
+                        <b>Pharmacy Awesome</b> came to be when
+                        Four college partners, Ryan, Jose, Ruben,
+                        and Ian came together to make your 
+                        friendly neigborhood pharmacy management system.
+                        With the combined experiences and skills we posess,
+                        we sought out to make a system that would ensure that
+                        our pharmaceutical facilities improve upon effiency and
+                        organization.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact section" id="home">
+            <div class="contact_container container grid">
+                <div class="contact_data">
+                    <h1 class="contact_title"> Contact Information</h1>
+                        <p>
+                        <b>1209 E 2nd St #100</b>
+                        <br>
+                        Tucson, AZ 85721
+                        <br>
+                        <a target="_blank" href="https://maps.app.goo.gl/7WPNkGqv1qJRFrsa6"> Get Directions</a>
+                        </p>
+                        <ul>
+                            <li>Email: <a href="mailto:contact@pharmacy.com">contact@pharmacy.com </a></li>
+                            <li>Phone: <a href="tel:(520)855-3010">(520) 855-3010</a></li>
+                            <li>Fax: <a href="tel:(520) 123-5813">(520) 855-3010</a></li>
+                        </ul>
+                    </div>
+            </div>
+        </section>
+
+        <section class="hours section" id="home">
+            <div class="hours_container container grid">
+                <div class="hours_data">
+                    <h1 class="hours_title"> Pharmacy Hours</h1>
+                    <div class="operating-hours">
+                        <div class="list">
+                            <ul>
+                                <li>Mon: 7:00 AM - 8:00 PM</li>
+                                <li>Tue: 7:00 AM - 8:00 PM</li>
+                                <li>Wed: 7:00 AM - 8:00 PM</li>
+                                <li>Thu: 7:00 AM - 8:00 PM</li>
+                                <li>Fri: 7:00 AM - 8:00 PM</li>
+                                <li>Sat: 8:00 AM - 6:00 PM</li>
+                                <li>Sun: Closed</li>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+        </section>
     {% endif %}
 {% endblock content %}

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Pharmacy Management System</title>
         {% block css %}
-        {% endblock css %}
+        {% endblock  %}
         {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}" />
     </head>
@@ -19,7 +19,6 @@
             <div class="divider"></div>
             <div class="header-section navigation">
                 <a href="{% url 'landingPage' %}" class="nav-link">Home</a>
-                <a href="{% url 'about' %}" class="nav-link">About</a>
                 {% load custom_filters %}
                 {% if user|is_in_group:"Pharmacy Technician,Pharmacist,Pharmacy Manager,Cashier" %}
                     <div class="divider"></div>
