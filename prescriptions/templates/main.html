@@ -1,11 +1,14 @@
 {% extends "base.html" %}
-
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'prescriptionMain.css' %}" />
+{% endblock css %}
 {% block content %}
 
-<h1>Pharmacy Awesome -- Prescriptions</h1>
+<h1>Manage Prescriptions</h1>
 {% if user.is_authenticated %}
-    <div><a href="{% url 'prescription_list' %}">View Prescription List</a></div>
-    <div><a href="{% url 'add_prescription' %}">Manually add a prescription</a></div>
+    <div><button><a href="{% url 'prescription_list' %}">View Prescription List</a></button></div>
+    <div><button><a href="{% url 'add_prescription' %}">Manually add a prescription</a></button></div>
 {% else %}
     <p>You must <a href="/accounts/login">login to an account</a> to view prescriptions inventory.</p>
 {% endif %}

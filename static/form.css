@@ -123,3 +123,15 @@
 .form-container button:hover {
     background-color: #218cfd;
 }
+
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.alert_message {
+    margin: 10px;
+    color: red;
+    font-weight: bold;
+}

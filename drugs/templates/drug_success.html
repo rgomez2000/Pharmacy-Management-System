@@ -6,6 +6,6 @@
 {% block content %}
 <div class="drug_success">
     <h1>Drug Created Succesfully!</h1>
-    <button href="{% url 'create_drug' %}" class="drug_link">Create Another Drug</button>
+    <button class="drug_link"><a href="{% url 'create_drug' %}">Create Another Drug</a></button>
 </div>
 {% endblock content %}

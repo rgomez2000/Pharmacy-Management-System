@@ -1,7 +1,47 @@
+* {
+    list-style-type: none;
+}
+
+h2 {
+    font-size: 30px;
+}
+
+ul {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
 #alert-success {
     margin-top: 2vh;
     margin-bottom: 2vh;
     font-size: larger;
     font-weight: bold;
     color: rgb(5, 182, 5);    
+}
+
+li {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 8rem;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: #007bff 0.3s;
+    color: #fff;
+    background-color: #007bff;
+    white-space: nowrap;
+}
+
+button:hover {
+    background-color: #218cfd;
+}
+
+a {
+    text-decoration: none;
+    color: white;
 }
