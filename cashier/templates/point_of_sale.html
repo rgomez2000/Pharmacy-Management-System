@@ -1,10 +1,13 @@
 {% extends "base.html" %}
-
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'patientMain.css' %}" />
+{% endblock css %}
 {% block content %}
 
-<h1>Pharmacy Awesome -- Point of Sale</h1>
+<h1>Point of Sale Menu</h1>
 {% if user.is_authenticated %}
-    <div><a href="{% url 'transaction' %}">Make new Transaction</a></div>
+    <div><button><a href="{% url 'transaction' %}">Make new Transaction</a></button></div>
 {% else %}
     <p>You must <a href="/accounts/login">login to an account</a> to access the point of sale system.</p>
 {% endif %}
