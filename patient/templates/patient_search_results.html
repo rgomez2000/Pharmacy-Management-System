@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'patientMain.css' %}" />
+{% endblock css %}
 {% block content %}
     <h1>Patient Search Results</h1>
     {% for patient in patient_list %}
@@ -7,5 +10,5 @@
             <a href="{% url 'edit_patient' patient.id %}">{{patient}}</a>
         </li>
     {% endfor %}
-    <a href="{% url 'patients_main' %}"> Return to main page</a>
+    <button><a href="{% url 'patients_main' %}"> Return to main page</a></button>
 {% endblock content %}

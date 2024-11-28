@@ -1,5 +1,5 @@
 .form-container {
-    max-width: 300px;
+    max-width: 600px;
     margin: 50px auto;
     padding: 20px;
     border: 1px solid;
@@ -119,19 +119,6 @@
     color: rgb(5, 182, 5);    
 }
 
-
 .form-container button:hover {
     background-color: #218cfd;
-}
-
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
-.alert_message {
-    margin: 10px;
-    color: red;
-    font-weight: bold;
 }

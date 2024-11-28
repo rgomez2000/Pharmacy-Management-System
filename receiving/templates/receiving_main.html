@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'prescription_list.css' %}" />
 {% endblock css %}
 {% block content %}
-<h1>Pharmacy Awesome -- Receiving</h1>
+<h1>Order Receiving Menu</h1>
 {% if user|is_in_group:"Pharmacy Manager" %}
     <h2>Order List</h2>
     <hr>
@@ -25,7 +25,7 @@
             <strong>Medication:</strong> {{ order.drug.drug_name }}<br>
             <strong>Quantity in Order:</strong> {{ order.quantity }}<br>
             <strong>Date Ordered:</strong> {{ order.order_date }}<br>
-            <button><a href="{% url 'receive_order' order.id %}">Receive this order</a></button>
+            <button><a class="button_links" href="{% url 'receive_order' order.id %}">Receive this order</a></button>
         </ul>
         <hr>
     </li>

@@ -43,13 +43,13 @@
                     <strong>Is Prescription Filled?</strong> {{ prescription.is_filled }}<br>
 
                         <!-- Display buttons only if the prescription is not filled -->
-                        <button><a href="{% url 'edit_prescription' prescription.id %}">Edit</a></button>
-                        <button><a href="{% url 'delete_prescription' prescription.id %}">Delete</a></button>
+                        <button><a class="button_links" href="{% url 'edit_prescription' prescription.id %}">Edit</a></button>
+                        <button><a class="button_links" href="{% url 'delete_prescription' prescription.id %}">Delete</a></button>
 
                         <!-- Only show Fill Prescription if the user is a pharmacist -->
                         
                         {% if user|is_in_group:"Pharmacist" %}
-                            <button><a href="{% url 'fill_prescription' prescription.id %}">Fill Prescription</a></button><br>
+                            <button><a class="button_links" href="{% url 'fill_prescription' prescription.id %}">Fill Prescription</a></button><br>
                         {% endif %}
                     {% endif %}
                     {% if prescription.is_filled %}

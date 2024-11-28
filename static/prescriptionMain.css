@@ -1,0 +1,30 @@
+* {
+    text-align: center; 
+}
+
+h1 {
+    margin-top: 400px;
+}
+
+button {
+    width: 25rem;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: #007bff 0.3s;
+    color: #fff;
+    background-color: #007bff;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+
+button:hover {
+    background-color: #218cfd;
+}

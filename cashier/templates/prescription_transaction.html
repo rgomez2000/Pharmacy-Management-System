@@ -7,7 +7,7 @@
 
 <div class="form-container">
     <h2>Purchasing</h2>
-    <form method="post">
+    <form class="form-group" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Add prescription to Transaction</button>

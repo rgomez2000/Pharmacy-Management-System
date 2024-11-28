@@ -1,7 +1,11 @@
 {% extends "base.html" %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'drugSuccess.css' %}" />
+{% endblock css %}
 {% block content %}
-
-<h1>Drug Created Succesfully!</h1>
-<a href="{% url 'create_drug' %}">Create Another Drug</a>
-
+<div class="drug_success">
+    <h1>Drug Created Succesfully!</h1>
+    <button class="drug_link"><a href="{% url 'create_drug' %}">Create Another Drug</a></button>
+</div>
 {% endblock content %}

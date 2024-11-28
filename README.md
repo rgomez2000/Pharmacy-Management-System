@@ -29,6 +29,13 @@ Before you begin, ensure you have met the following requirements:
    cd pharmacy
    ```
 
+1. **Install the Required Packages**
+
+   ```shell
+   pip install pillow
+   pip install django-currentuser
+   ```
+
 2. **Initialize the Database**
 
    ```shell

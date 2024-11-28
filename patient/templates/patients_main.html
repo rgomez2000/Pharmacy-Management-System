@@ -1,19 +1,25 @@
 {% extends "base.html" %}
-
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'patientMain.css' %}" />
+{% endblock css %}
 {% block content %}
 
-<h1>Pharmacy Awesome -- Patients</h1>
+<h1>Patient Menu</h1>
 {% if user.is_authenticated %}
     <!-- Search Bar for Patients -->
-     <h2>Search for Patient by Name or Date of Birth</h2>
-    <form action="{% url 'patient_search' %}" method="get">
-        <input name="query" type="text" placeholder="Patient Name...">
-    </form>
+    
+    <div class="form-container">
+        <h2>Search for Patient by Name or Date of Birth</h2>
+        <form action="{% url 'patient_search' %}" method="get">
+            <input class="form_input" name="query" type="text" placeholder="Patient Name...">
+        </form>
 
-    <h2>Other Patient Links</h2>
+        <h2>Other Patient Links</h2>
 
-    <div><a href="{% url 'patient_list' %}">View Patient List</a></div>
-    <div><a href="{% url 'add_patient' %}">Register a new Patient</a></div>
+        <div><button><a href="{% url 'patient_list' %}">View Patient List</a></button></div>
+        <div><button><a href="{% url 'add_patient' %}">Register a new Patient</a></button></div>
+    </div>
 {% else %}
     <p>You must <a href="/accounts/login">login to an account</a> to view Patients.</p>
 {% endif %}

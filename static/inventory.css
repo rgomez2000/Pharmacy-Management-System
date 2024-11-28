@@ -1,5 +1,6 @@
 .form-container {
     max-width: 300px;
+    /* Add margin to the top and bottom to center the form and avoid sticking to the browser edge */
     margin: 50px auto;
     padding: 20px;
     border: 1px solid;
@@ -10,10 +11,17 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.form-container h2 {
+.form-container h1 {
     text-align: center;
     /* Increase space between title and form elements */
     margin-bottom: 20px;
+}
+
+.form-container h3 {
+    text-align: center;
+    /* Increase space between title and form elements */
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .form-container button {
@@ -43,6 +51,10 @@
     margin-bottom: 5px;
     /* Bolden labels for readability */
     font-weight: bold;
+}
+
+p {
+    margin-bottom: 3px;
 }
 
 .form-group input,
@@ -122,16 +134,4 @@
 
 .form-container button:hover {
     background-color: #218cfd;
-}
-
-
-a {
-    text-decoration: none;
-    color: white;
-}
-
-.alert_message {
-    margin: 10px;
-    color: red;
-    font-weight: bold;
 }

@@ -2,38 +2,9 @@
 {% load custom_filters %}
 {% block css %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'prescription_list.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'form.css' %}" />
 {% endblock css %}
 {% block content %}
-
-<style>
-    /* Button styling */
-    button {
-        padding: 10px 15px;
-        font-size: 16px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-top: 20px;
-    }
-
-    button:hover {
-        background-color: #45a049;
-    }
-
-    h1 {
-        color: #333;
-    }
-
-    select, button {
-        margin-top: 10px;
-        display: block;
-    }
-</style>
-
-<h2>Report Generator</h2>
 
 {% if messages %}
     {% for message in messages %}
@@ -42,7 +13,8 @@
 {% endif %}
 
 <!-- Form to select a report type and date range -->
-<form method="GET" action="{% url 'reports' %}">
+<form class="form-container" method="GET" action="{% url 'reports' %}">
+    <h2>Report Generator</h2>
     <label for="report_type">Select Report Type:</label>
     <select id="report_type" name="report_type">
         <option value="">--Report Type--</option>
@@ -211,7 +183,7 @@
     });
 </script>
 {% else %}
-    <p>Please select a report type.</p>
+    <p class="report">Please select a report type.</p>
 {% endif %}
 
 {% endblock content %}

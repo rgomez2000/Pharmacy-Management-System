@@ -1,3 +1,20 @@
+* {
+    list-style-type: none;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+ul {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
 #alert-success {
     margin-top: 2vh;
     margin-bottom: 2vh;
@@ -5,3 +22,94 @@
     font-weight: bold;
     color: rgb(5, 182, 5);    
 }
+
+.report {
+    text-align: center;
+}
+
+li {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+button {
+    width: 8rem;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: #007bff 0.3s;
+    color: #fff;
+    background-color: #007bff;
+    white-space: nowrap;
+}
+
+button:hover {
+    background-color: #218cfd;
+}
+
+.button_links {
+    text-decoration: none;
+    color: white;
+}
+
+.form_input {
+    width: 14rem;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid;
+    border-radius: 4px;
+    border-color: #ccc;
+    background-color: #fff;
+    color: #000;
+}
+
+.patient_buttons {
+    position: relative;
+    font-size: 18px;
+    color: black;
+    text-decoration: none;
+    font-weight: 550;
+}
+
+.patient_buttons::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: #ff8e3c;
+    transition: .4s;
+}
+
+.patient_buttons:hover::before {
+    width: 100%;
+}
+
+.reports-button {
+    position: relative;
+    font-size: 25px;
+    color: black;
+    text-decoration: none;
+    font-weight: 550;
+}
+
+.reports-button::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: #ff8e3c;
+    transition: .4s;
+}
+
+.reports-button:hover::before {
+    width: 100%;
+}
+
+
