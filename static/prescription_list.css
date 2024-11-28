@@ -41,7 +41,41 @@ button:hover {
     background-color: #218cfd;
 }
 
-a {
+.button_links {
     text-decoration: none;
     color: white;
+}
+
+.form_input {
+    width: 14rem;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid;
+    border-radius: 4px;
+    border-color: #ccc;
+    background-color: #fff;
+    color: #000;
+}
+
+.patient_buttons {
+    position: relative;
+    font-size: 18px;
+    color: black;
+    text-decoration: none;
+    font-weight: 550;
+}
+
+.patient_buttons::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: #ff8e3c;
+    transition: .4s;
+}
+
+.patient_buttons:hover::before {
+    width: 100%;
 }

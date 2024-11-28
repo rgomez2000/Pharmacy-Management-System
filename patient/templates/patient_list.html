@@ -24,24 +24,24 @@
         <!-- Search Bar for Patients -->
         <h3>Search for Patient by Name or Date of Birth</h3>
          <form action="{% url 'patient_search' %}" method="get">
-            <input name="query" type="text" placeholder="Patient Name...">
+            <input class="form_input" name="query" type="text" placeholder="Patient Name...">
          </form>
 
         <!-- Loop through the patients and display them -->
         <ul>
             {% for patient in patients %}
                 <li>
-                    <strong><a href="{% url 'patient_details' patient.id %}">{{ patient.first_name }} {{ patient.last_name }}</a></strong><br>
+                    <strong><a class="patient_buttons" href="{% url 'patient_details' patient.id %}">{{ patient.first_name }} {{ patient.last_name }}</a></strong><br>
                     <strong>DOB:</strong> {{ patient.dob }}<br>
 
-                    <a href="{% url 'edit_patient' patient.id %}">Edit</a>
+                    <button><a class="button_links" href="{% url 'edit_patient' patient.id %}">Edit</a></button>
                     <!-- Display edit only if the user is a pharmacy manager -->
-                    <a href="{% url 'delete_patient' patient.id %}">Delete</a>
+                    <button><a class="button_links" href="{% url 'delete_patient' patient.id %}">Delete</a></button>
                 </li>
                 <hr>
             {% endfor %}
         </ul>
-        <a href="{% url 'add_patient'%}">Add a New Patient</a>
+        <a class="patient_buttons" href="{% url 'add_patient'%}">Add a New Patient</a>
     </body>
     </html>
 {% endblock %}
