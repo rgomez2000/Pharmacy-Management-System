@@ -2,8 +2,13 @@
     list-style-type: none;
 }
 
+h1 {
+    margin-bottom: 10px;
+}
+
 h2 {
     font-size: 30px;
+    margin-bottom: 20px;
 }
 
 ul {
@@ -16,6 +21,10 @@ ul {
     font-size: larger;
     font-weight: bold;
     color: rgb(5, 182, 5);    
+}
+
+.report {
+    text-align: center;
 }
 
 li {
@@ -79,3 +88,28 @@ button:hover {
 .patient_buttons:hover::before {
     width: 100%;
 }
+
+.reports-button {
+    position: relative;
+    font-size: 25px;
+    color: black;
+    text-decoration: none;
+    font-weight: 550;
+}
+
+.reports-button::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: #ff8e3c;
+    transition: .4s;
+}
+
+.reports-button:hover::before {
+    width: 100%;
+}
+
+

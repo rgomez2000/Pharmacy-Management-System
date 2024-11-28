@@ -7,32 +7,6 @@
 {% block content %}
 
 <body>
-    <style>
-        /* Button styling */
-        button {
-            padding: 10px 15px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        select, button {
-            margin-top: 10px;
-            display: block;
-        }
-    </style>
     <div class="header-section auth-links">
         {% if user.is_authenticated %}
             <h1>Welcome, {{ user.username }}</h1>
@@ -41,7 +15,7 @@
         {% endif %}
     </div>
 
-    <h2><a href="{% url 'reports' %}">Access Reports</a></h2>
+    <h2><a class="reports-button" href="{% url 'reports' %}">Access Reports</a></h2>
 
     <h2>Notifications</h2>
     <!-- Check if there are any notifications at all -->
