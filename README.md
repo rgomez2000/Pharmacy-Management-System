@@ -8,8 +8,9 @@ The Pharmacy Management system is a system designed to facilitate the management
 
 - **Prescription Management**: Input prescriptions to manage inventory, distribution, and availability of prescriptions.
 - **Patient Management System**: View patients and their prescription requirements, notifications for reminders on refills, assign new prescriptions, etc.
-- **Patient and Staff Accounts**: Allow patients to make accounts to view their indivudal prescriptions and information.
-- **Prescription purchasing system**: Patients are able to make purchases of prescriptions prescribed to them.
+- **Specialized Staff Accounts**: Allow pharmacy staff with specified role permissions to access their specific role features to perform their role efficiently.
+- **Prescription purchasing system**: Patients are able to make purchases of prescriptions prescribed to them through an implemented point of sale system.
+- **Manager Dashboard**: A specialized dashboard for managers to view higher level information, such as notificaitons for drugs, prescriptions, patients, etc.
 
 ## Getting Started
 
