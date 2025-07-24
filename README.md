@@ -55,4 +55,5 @@ Before you begin, ensure you have met the following requirements:
    ```
 
    Visit `http://127.0.0.1:8000/` in your web browser to view the application.
-   Note: To view all of the features of the application, a superuser is available. Input **admin as the username and **password as the password to use the available superuser.
+   
+   Note: To view all of the features of the application, a superuser is available. Input **admin** as the username and **password** as the password to use the available         superuser.
