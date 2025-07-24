@@ -29,24 +29,31 @@ Before you begin, ensure you have met the following requirements:
    cd pharmacy
    ```
 
-1. **Install the Required Packages**
+2. **Install the Required Packages**
 
    ```shell
    pip install pillow
    pip install django-currentuser
    ```
+3. **Return Directory Back to Main Folder**
 
-2. **Initialize the Database**
+   ```shell
+   cd ..
+   ```
+
+4. **Initialize the Database**
 
    ```shell
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-3. **Run the Development Server**
+5. **Run the Development Server**
 
    ```shell
    python manage.py runserver
    ```
 
    Visit `http://127.0.0.1:8000/` in your web browser to view the application.
+   
+   Note: To view all of the features of the application, a superuser is available. Input **admin** as the username and **password** as the password to use the available         superuser.
